@@ -1,0 +1,3823 @@
+﻿/*
+Theme Name: Engrafted Chapel
+Theme URI: https://engwordchapel.com
+Author: Engrafted Word Chapel International
+Author URI: https://engwordchapel.com
+Description: A modern, responsive WordPress theme designed for Engrafted Word Chapel International. Features a clean, contemporary design inspired by leading church websites, with full Customizer integration, homepage sections, and multiple page templates.
+Version: 2.4.6
+License: GNU General Public License v2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: engrafted-chapel
+Tags: church, responsive, customizer, modern, one-page, ministries, sermons
+
+This theme is built for WordPress 5.0+ and works seamlessly on Hostinger hosting.
+*/
+
+/* ============================================
+   THEME COLOR TOKENS
+   ============================================ */
+:root {
+    /* Haven-inspired dark "sanctuary" palette */
+    --ec-black: #0b0b0d;
+    --ec-black-2: #0f0f12;
+    --ec-panel: #141417;
+    --ec-panel-2: #1b1b20;
+    --ec-ember: #d9531f;
+    --ec-ember-glow: #f0823c;
+    --ec-cream: #f3eee6;
+    --ec-muted: rgba(243, 238, 230, 0.62);
+    --ec-faint: rgba(243, 238, 230, 0.40);
+    --ec-line: rgba(243, 238, 230, 0.12);
+
+    /* Legacy token names repointed to the new palette so existing
+       rules adopt the dark/ember theme automatically. */
+    --ec-navy: #0b0b0d;
+    --ec-navy-deep: #060607;
+    --ec-gold: #d9531f;
+    --ec-gold-dark: #b8431a;
+    --ec-orange: #d9531f;
+    --ec-orange-dark: #b8431a;
+    --ec-parchment: #121215;
+    --ec-parchment-soft: #16161a;
+    --ec-oxblood: #7c2d2d;
+    --ec-display: 'Cormorant Garamond', 'Georgia', 'Times New Roman', serif;
+}
+
+/* ============================================
+   CSS RESET & BASE
+   ============================================ */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+    font-weight: 400;
+    line-height: 1.7;
+    color: var(--ec-cream);
+    background-color: var(--ec-black);
+    overflow-x: hidden;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+a {
+    color: #c9a84c;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+a:hover {
+    color: #a0853a;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--ec-display);
+    font-weight: 600;
+    line-height: 1.12;
+    color: var(--ec-cream);
+    margin-bottom: 1rem;
+    letter-spacing: 0;
+}
+
+p {
+    margin-bottom: 1rem;
+}
+
+ul, ol {
+    margin-bottom: 1rem;
+    padding-left: 1.5rem;
+}
+
+button, input, select, textarea {
+    font-family: inherit;
+    font-size: inherit;
+}
+
+/* ============================================
+   WORDPRESS DEFAULTS
+   ============================================ */
+.alignleft { float: left; margin-right: 1.5rem; }
+.alignright { float: right; margin-left: 1.5rem; }
+.aligncenter { display: block; margin-left: auto; margin-right: auto; }
+.wp-caption { max-width: 100%; }
+.wp-caption-text { font-size: 0.875rem; color: #666; text-align: center; margin-top: 0.5rem; }
+.screen-reader-text {
+    border: 0; clip: rect(1px, 1px, 1px, 1px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0; position: absolute; width: 1px; word-wrap: normal !important;
+}
+
+/* ============================================
+   CONTAINER & GRID
+   ============================================ */
+.ec-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+.ec-row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -1rem;
+}
+
+.ec-col {
+    flex: 1;
+    padding: 0 1rem;
+}
+
+.ec-col-12 { flex: 0 0 100%; max-width: 100%; }
+.ec-col-6 { flex: 0 0 50%; max-width: 50%; }
+.ec-col-4 { flex: 0 0 33.333%; max-width: 33.333%; }
+.ec-col-3 { flex: 0 0 25%; max-width: 25%; }
+
+/* ============================================
+   HEADER & NAVIGATION
+   ============================================ */
+.ec-header {
+    position: fixed;
+    top: 0; left: 0; width: 100%;
+    z-index: 1000;
+    background: transparent;
+    transition: all 0.4s ease;
+    padding: 1.25rem 0;
+}
+
+.ec-header.scrolled {
+    background: rgba(26, 26, 46, 0.98);
+    backdrop-filter: blur(10px);
+    padding: 0.75rem 0;
+}
+
+.ec-header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+.ec-logo-link {
+    display: inline-flex;
+    align-items: center;
+}
+
+.ec-logo-img {
+    height: 56px;
+    width: auto;
+    display: block;
+    transition: height 0.4s ease;
+}
+
+.ec-header.scrolled .ec-logo-img {
+    height: 44px;
+}
+
+.ec-main-nav {
+    display: flex;
+    align-items: center;
+}
+
+.ec-main-nav ul {
+    display: flex;
+    list-style: none;
+    margin: 0; padding: 0;
+    gap: 2.5rem;
+}
+
+.ec-main-nav a {
+    color: #ffffff;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    position: relative;
+    padding: 0.5rem 0;
+}
+
+.ec-main-nav a:hover {
+    color: #c9a84c;
+}
+
+.ec-header-cta {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.ec-btn-new {
+    display: inline-block;
+    padding: 0.6rem 1.5rem;
+    background: transparent;
+    color: #ffffff;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 30px;
+    border: 1px solid rgba(255,255,255,0.4);
+    transition: all 0.3s ease;
+}
+
+.ec-btn-new:hover {
+    background: #c9a84c;
+    border-color: #c9a84c;
+    color: #1a1a2e;
+}
+
+.ec-menu-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 0.5rem;
+    background: none;
+    border: none;
+}
+
+.ec-menu-toggle span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: #ffffff;
+    transition: all 0.3s ease;
+}
+
+/* ============================================
+   HERO SECTION
+   ============================================ */
+.ec-hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: #ffffff;
+    overflow: hidden;
+}
+
+.ec-hero-bg {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-size: cover;
+    background-position: center;
+    z-index: 1;
+}
+
+.ec-hero-nobg .ec-hero-bg {
+    background: linear-gradient(135deg, #0d1526 0%, #1a1a2e 55%, #232347 100%);
+}
+
+.ec-hero-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background:
+        linear-gradient(90deg, rgba(13, 21, 38, 0.96) 0%, rgba(13, 21, 38, 0.7) 45%, rgba(13, 21, 38, 0.4) 100%),
+        linear-gradient(to top, rgba(13, 21, 38, 0.95) 0%, rgba(13, 21, 38, 0) 45%);
+    z-index: 2;
+}
+
+.ec-hero-content {
+    position: relative;
+    z-index: 3;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 9rem 2rem 3rem;
+    width: 100%;
+}
+
+.ec-hero-title {
+    margin-bottom: 0;
+    max-width: 620px;
+}
+
+.ec-hero-script {
+    display: block;
+    font-family: var(--ec-display);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 5rem;
+    line-height: 1.02;
+    color: var(--ec-cream);
+}
+
+.ec-hero-block {
+    display: block;
+    font-family: var(--ec-display);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 5rem;
+    line-height: 1.02;
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--ec-cream);
+}
+
+.ec-hero-block::before,
+.ec-hero-block::after {
+    content: none;
+}
+
+.ec-hero-rule {
+    display: block;
+    width: 72px;
+    height: 3px;
+    background: var(--ec-orange);
+    border-radius: 2px;
+    margin: 1.5rem 0;
+}
+
+.ec-hero-desc {
+    font-size: 1.05rem;
+    font-weight: 300;
+    margin-bottom: 2rem;
+    opacity: 0.85;
+    max-width: 420px;
+    line-height: 1.7;
+}
+
+.ec-hero-buttons {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.ec-btn-orange {
+    background: var(--ec-orange);
+    color: #1a1a2e;
+    box-shadow: 0 8px 24px rgba(245, 166, 35, 0.35);
+}
+
+.ec-btn-orange:hover {
+    background: var(--ec-orange-dark);
+    color: #1a1a2e;
+    transform: translateY(-2px);
+}
+
+/* Hero feature highlights bar */
+.ec-hero-features {
+    position: relative;
+    z-index: 3;
+    margin-top: auto;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(13, 21, 38, 0.55);
+    backdrop-filter: blur(8px);
+}
+
+.ec-hero-features-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+}
+
+.ec-feature-item {
+    position: relative;
+    text-align: center;
+    color: #ffffff;
+}
+
+.ec-feature-item:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    right: -1rem;
+    top: 10%;
+    height: 80%;
+    width: 1px;
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.ec-feature-item i {
+    display: block;
+    font-size: 1.75rem;
+    color: #ffffff;
+    margin-bottom: 0.85rem;
+}
+
+.ec-feature-item h4 {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #ffffff;
+    margin-bottom: 0.4rem;
+}
+
+.ec-feature-item p {
+    font-size: 0.82rem;
+    color: rgba(255, 255, 255, 0.65);
+    margin: 0;
+    line-height: 1.5;
+}
+
+.ec-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.875rem 1.75rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: none;
+}
+
+.ec-btn-gold {
+    background: #c9a84c;
+    color: #1a1a2e;
+}
+
+.ec-btn-gold:hover {
+    background: #a0853a;
+    color: #1a1a2e;
+    transform: translateY(-2px);
+}
+
+.ec-btn-outline {
+    background: transparent;
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.ec-btn-outline:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: #ffffff;
+}
+
+/* ============================================
+   SECTION STYLES
+   ============================================ */
+.ec-section {
+    padding: 5rem 0;
+    position: relative;
+}
+
+.ec-section-white { background: #ffffff; }
+.ec-section-light { background: var(--ec-parchment); }
+.ec-section-dark { background: var(--ec-navy); color: #ffffff; }
+.ec-section-dark h2,
+.ec-section-dark h3 { color: #ffffff; }
+
+.ec-section-label {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    color: #888;
+    margin-bottom: 1rem;
+}
+
+.ec-section-dark .ec-section-label { color: rgba(255,255,255,0.5); }
+
+.ec-section-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: #1a1a2e;
+    line-height: 1.15;
+}
+
+.ec-section-title .ec-gold {
+    color: #c9a84c;
+    font-family: 'Georgia', serif;
+    font-style: italic;
+    font-weight: 400;
+}
+
+.ec-section-desc {
+    font-size: 1rem;
+    color: #666;
+    line-height: 1.7;
+    max-width: 500px;
+}
+
+.ec-section-dark .ec-section-desc { color: rgba(255, 255, 255, 0.7); }
+
+.ec-section-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 2.5rem;
+}
+
+.ec-section-header-row h2 { margin-bottom: 0; }
+
+.ec-view-all {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #c9a84c;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.ec-view-all:hover {
+    color: #a0853a;
+    padding-right: 5px;
+}
+
+/* ============================================
+   WELCOME SECTION
+   ============================================ */
+.ec-welcome {
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+}
+
+.ec-welcome-image {
+    flex: 1;
+    position: relative;
+}
+
+.ec-welcome-image img {
+    border-radius: 12px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    width: 100%;
+    object-fit: cover;
+}
+
+.ec-welcome-content {
+    flex: 1;
+}
+
+.ec-welcome-content h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.15;
+}
+
+.ec-welcome-content p {
+    font-size: 1rem;
+    color: #555;
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+}
+
+.ec-btn-small {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: #1a1a2e;
+    color: #ffffff;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    border: none;
+}
+
+.ec-btn-small:hover {
+    background: #c9a84c;
+    color: #1a1a2e;
+    transform: translateY(-2px);
+}
+
+/* ============================================
+   SERVICE TIMES
+   ============================================ */
+.ec-services-row {
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+}
+
+.ec-services-left {
+    flex: 1;
+}
+
+.ec-services-left .ec-section-title { margin-bottom: 1.5rem; }
+.ec-services-left .ec-section-desc { margin-bottom: 2rem; }
+
+.ec-services-right {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.ec-service-card-alt {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.ec-service-card-alt:hover {
+    background: rgba(255,255,255,0.08);
+    transform: translateY(-5px);
+}
+
+.ec-service-card-alt i {
+    font-size: 2rem;
+    color: #c9a84c;
+    margin-bottom: 1rem;
+}
+
+.ec-service-card-alt .ec-time {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+}
+
+.ec-service-card-alt .ec-time span {
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+.ec-service-card-alt h3 {
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+    color: #ffffff;
+}
+
+.ec-service-card-alt p {
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.6);
+    margin: 0;
+}
+
+.ec-view-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #c9a84c;
+    margin-top: 2rem;
+}
+
+.ec-view-link:hover {
+    color: #a0853a;
+}
+
+/* ============================================
+   SERMONS SECTION
+   ============================================ */
+.ec-sermon-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+
+.ec-sermon-card {
+    background: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+}
+
+.ec-sermon-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+}
+
+.ec-sermon-thumb {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+}
+
+.ec-sermon-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.ec-sermon-card:hover .ec-sermon-thumb img {
+    transform: scale(1.05);
+}
+
+.ec-sermon-play-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.ec-sermon-play-btn {
+    width: 56px;
+    height: 56px;
+    background: rgba(255,255,255,0.9);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #1a1a2e;
+    font-size: 1.25rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.ec-sermon-play-btn:hover {
+    background: #c9a84c;
+    color: #ffffff;
+    transform: scale(1.1);
+}
+
+.ec-sermon-info {
+    padding: 1.25rem;
+}
+
+.ec-sermon-info h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+}
+
+.ec-sermon-info h3 a { color: #1a1a2e; }
+.ec-sermon-info h3 a:hover { color: #c9a84c; }
+
+.ec-sermon-meta {
+    font-size: 0.8rem;
+    color: #888;
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.ec-sermon-meta .ec-dot {
+    width: 3px; height: 3px;
+    background: #888;
+    border-radius: 50%;
+}
+
+/* ============================================
+   EVENTS SECTION
+   ============================================ */
+.ec-events-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+}
+
+.ec-event-card {
+    background: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+}
+
+.ec-event-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+}
+
+.ec-event-card-thumb {
+    position: relative;
+    height: 160px;
+    overflow: hidden;
+}
+
+.ec-event-card-thumb img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+}
+
+.ec-event-date-badge {
+    position: absolute;
+    top: 1rem; left: 1rem;
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 0.5rem 0.75rem;
+    text-align: center;
+    min-width: 50px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.ec-event-date-badge .ec-month {
+    display: block;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #888;
+}
+
+.ec-event-date-badge .ec-day {
+    display: block;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1a1a2e;
+    line-height: 1;
+}
+
+.ec-event-card-info {
+    padding: 1.25rem;
+}
+
+.ec-event-card-info h3 {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.ec-event-card-info .ec-event-time {
+    font-size: 0.8rem;
+    color: #888;
+    margin-bottom: 0.5rem;
+}
+
+.ec-event-card-info p {
+    font-size: 0.85rem;
+    color: #555;
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* ============================================
+   MINISTRIES SECTION
+   ============================================ */
+.ec-ministry-grid-alt {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+}
+
+.ec-ministry-card-alt {
+    text-align: center;
+    padding: 1rem;
+}
+
+.ec-ministry-card-alt i {
+    font-size: 2.5rem;
+    color: #c9a84c;
+    margin-bottom: 1.25rem;
+    display: block;
+}
+
+.ec-ministry-card-alt h3 {
+    font-size: 1.1rem;
+    color: #ffffff;
+    margin-bottom: 0.75rem;
+}
+
+.ec-ministry-card-alt p {
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.65);
+    line-height: 1.6;
+    margin-bottom: 1.25rem;
+}
+
+.ec-ministry-card-alt .ec-learn-more {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #c9a84c;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.ec-ministry-card-alt .ec-learn-more:hover {
+    color: #a0853a;
+    padding-left: 5px;
+}
+
+/* ============================================
+   TESTIMONY SECTION
+   ============================================ */
+.ec-testimony-section {
+    text-align: center;
+    padding: 5rem 0;
+}
+
+.ec-testimony-quote-mark {
+    font-size: 4rem;
+    color: #c9a84c;
+    line-height: 1;
+    font-family: Georgia, serif;
+    margin-bottom: 1rem;
+}
+
+.ec-testimony-text {
+    font-size: 1.5rem;
+    font-weight: 400;
+    line-height: 1.6;
+    color: #1a1a2e;
+    max-width: 700px;
+    margin: 0 auto 1.5rem;
+}
+
+.ec-testimony-author {
+    font-size: 1rem;
+    color: #888;
+    font-weight: 500;
+}
+
+.ec-testimony-dots {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 2rem;
+}
+
+.ec-testimony-dots span {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #ddd;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.ec-testimony-dots span.active {
+    background: #c9a84c;
+}
+
+/* ============================================
+   GIVING SECTION
+   ============================================ */
+.ec-giving-section {
+    position: relative;
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+}
+
+.ec-giving-bg {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-size: cover;
+    background-position: center;
+    z-index: 1;
+}
+
+.ec-giving-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(90deg, rgba(26, 26, 46, 0.95) 0%, rgba(26, 26, 46, 0.85) 60%, rgba(26, 26, 46, 0.7) 100%);
+    z-index: 2;
+}
+
+.ec-giving-content {
+    position: relative;
+    z-index: 3;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 3rem;
+}
+
+.ec-giving-text {
+    max-width: 500px;
+}
+
+.ec-giving-text h2 {
+    font-size: 2.5rem;
+    color: #ffffff;
+    margin-bottom: 1rem;
+    line-height: 1.15;
+}
+
+.ec-giving-text h2 .ec-gold {
+    color: #c9a84c;
+    font-family: 'Georgia', serif;
+    font-style: italic;
+    font-weight: 400;
+}
+
+.ec-giving-text p {
+    color: rgba(255,255,255,0.7);
+    font-size: 1rem;
+    line-height: 1.7;
+}
+
+.ec-giving-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.ec-giving-actions .ec-btn-gold {
+    padding: 1rem 2.5rem;
+    font-size: 0.8rem;
+}
+
+.ec-giving-actions .ec-view-all {
+    color: rgba(255,255,255,0.7);
+}
+
+.ec-giving-actions .ec-view-all:hover {
+    color: #c9a84c;
+}
+
+/* ============================================
+   NEWSLETTER SECTION
+   ============================================ */
+.ec-newsletter {
+    background: #111122;
+    padding: 3rem 0;
+}
+
+.ec-newsletter-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 3rem;
+}
+
+.ec-newsletter-icon {
+    font-size: 2.5rem;
+    color: #c9a84c;
+    flex-shrink: 0;
+}
+
+.ec-newsletter-text h3 {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 0.25rem;
+}
+
+.ec-newsletter-text p {
+    font-size: 1rem;
+    color: rgba(255,255,255,0.7);
+    margin: 0;
+}
+
+.ec-newsletter-form {
+    display: flex;
+    gap: 0.75rem;
+    flex: 1;
+    max-width: 500px;
+}
+
+.ec-newsletter-form input {
+    flex: 1;
+    padding: 0.875rem 1.25rem;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 4px;
+    background: rgba(255,255,255,0.05);
+    color: #ffffff;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.ec-newsletter-form input::placeholder {
+    color: rgba(255,255,255,0.4);
+}
+
+.ec-newsletter-form input:focus {
+    outline: none;
+    border-color: #c9a84c;
+    background: rgba(255,255,255,0.1);
+}
+
+.ec-newsletter-form button {
+    padding: 0.875rem 2rem;
+    background: #c9a84c;
+    color: #1a1a2e;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.ec-newsletter-form button:hover {
+    background: #a0853a;
+    transform: translateY(-2px);
+}
+
+/* ============================================
+   FOOTER
+   ============================================ */
+.ec-footer {
+    background: #0a0a18;
+    color: rgba(255, 255, 255, 0.6);
+    padding: 4rem 0 0;
+}
+
+.ec-footer-widgets {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1.5fr;
+    gap: 3rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.ec-footer-logo {
+    height: 72px;
+    width: auto;
+    margin-bottom: 1.25rem;
+}
+
+.ec-footer-brand h3 {
+    color: #ffffff;
+    font-size: 1rem;
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.ec-footer-brand p {
+    font-size: 0.9rem;
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+    color: rgba(255,255,255,0.5);
+}
+
+.ec-footer-social {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.ec-footer-social a {
+    width: 36px; height: 36px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255,255,255,0.6);
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
+}
+
+.ec-footer-social a:hover {
+    background: #c9a84c;
+    color: #1a1a2e;
+    transform: translateY(-3px);
+}
+
+.ec-footer-widget h4 {
+    color: #ffffff;
+    font-size: 0.75rem;
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 600;
+}
+
+.ec-footer-widget ul {
+    list-style: none;
+    padding: 0; margin: 0;
+}
+
+.ec-footer-widget li {
+    margin-bottom: 0.6rem;
+}
+
+.ec-footer-widget a {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
+}
+
+.ec-footer-widget a:hover {
+    color: #c9a84c;
+    padding-left: 3px;
+}
+
+.ec-footer-contact p {
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.6;
+}
+
+.ec-footer-contact a {
+    color: rgba(255,255,255,0.5);
+}
+
+.ec-footer-contact a:hover {
+    color: #c9a84c;
+}
+
+.ec-footer-bottom {
+    padding: 1.5rem 0;
+    display: flex;
+    justify-content: center;
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.3);
+}
+
+/* ============================================
+   PAGE TEMPLATES
+   ============================================ */
+.ec-page-header {
+    position: relative;
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #ffffff;
+    margin-bottom: 4rem;
+    overflow: hidden;
+    padding-top: 80px;
+    background: linear-gradient(135deg, #0d1526 0%, #1a1a2e 100%);
+}
+
+.ec-page-header-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: rgba(201, 168, 76, 0.15);
+    border: 1px solid rgba(201, 168, 76, 0.45);
+    color: var(--ec-gold);
+    font-size: 1.75rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Signature device: scripture eyebrow above page titles */
+.ec-page-header-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    color: var(--ec-gold);
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.85rem;
+    position: relative;
+}
+
+.ec-page-header-eyebrow::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    width: 36px;
+    height: 2px;
+    background: var(--ec-gold);
+    opacity: 0.6;
+}
+
+.ec-page-header-eyebrow i {
+    font-size: 0.8rem;
+    opacity: 0.9;
+}
+
+/* Per-page header accents â€” each page gets its own colour mood */
+.ec-ph-about .ec-page-header-overlay     { background: linear-gradient(135deg, rgba(26,26,46,0.92) 0%, rgba(95,75,30,0.78) 100%); }
+.ec-ph-sermons .ec-page-header-overlay   { background: linear-gradient(135deg, rgba(15,12,30,0.94) 0%, rgba(54,32,74,0.82) 100%); }
+.ec-ph-events .ec-page-header-overlay    { background: linear-gradient(135deg, rgba(13,21,38,0.92) 0%, rgba(18,72,76,0.80) 100%); }
+.ec-ph-ministries .ec-page-header-overlay { background: linear-gradient(135deg, rgba(26,26,46,0.92) 0%, rgba(92,26,32,0.80) 100%); }
+.ec-ph-contact .ec-page-header-overlay   { background: linear-gradient(135deg, rgba(13,21,38,0.92) 0%, rgba(26,46,92,0.80) 100%); }
+.ec-ph-college .ec-page-header-overlay   { background: linear-gradient(135deg, rgba(13,30,24,0.92) 0%, rgba(20,76,54,0.80) 100%); }
+.ec-ph-outreach .ec-page-header-overlay  { background: linear-gradient(135deg, rgba(40,22,10,0.92) 0%, rgba(196,120,30,0.78) 100%); }
+
+.ec-page-header-bg {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-size: cover;
+    background-position: center;
+    z-index: 1;
+}
+
+.ec-page-header-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(135deg, rgba(26, 26, 46, 0.9) 0%, rgba(42, 42, 72, 0.8) 100%);
+    z-index: 2;
+}
+
+.ec-page-header-content {
+    position: relative;
+    z-index: 3;
+}
+
+.ec-page-header h1 {
+    font-size: 3.6rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.02em;
+}
+
+.ec-page-header p {
+    font-size: 1.1rem;
+    opacity: 0.82;
+    max-width: 620px;
+    margin: 0 auto;
+}
+
+.ec-page-content {
+    padding: 0 0 4rem;
+}
+
+.ec-content-block {
+    max-width: 800px;
+    margin: 0 auto 3rem;
+}
+
+.ec-content-block h2 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid #c9a84c;
+    display: inline-block;
+}
+
+.ec-content-block p {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: #444;
+    margin-bottom: 1.25rem;
+}
+
+.ec-content-block ul {
+    list-style: none;
+    padding: 0;
+}
+
+.ec-content-block ul li {
+    padding: 0.75rem 0 0.75rem 2rem;
+    position: relative;
+    font-size: 1.05rem;
+    color: #444;
+    border-bottom: 1px solid #eee;
+}
+
+.ec-content-block ul li::before {
+    content: 'âœ“';
+    position: absolute;
+    left: 0;
+    color: #c9a84c;
+    font-weight: bold;
+}
+
+.ec-beliefs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin: 2rem 0;
+}
+
+.ec-belief-card {
+    background: var(--ec-parchment-soft);
+    border-radius: 12px;
+    padding: 2rem;
+    transition: all 0.3s ease;
+}
+
+.ec-belief-card:hover {
+    background: #ffffff;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+    transform: translateY(-5px);
+}
+
+.ec-belief-card .ec-number {
+    width: 45px; height: 45px;
+    background: linear-gradient(135deg, #c9a84c 0%, #a0853a 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.ec-values-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin: 2rem 0;
+}
+
+.ec-value-card {
+    text-align: center;
+    padding: 2rem;
+    background: var(--ec-parchment-soft);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.ec-value-card:hover {
+    background: #ffffff;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+    transform: translateY(-5px);
+}
+
+.ec-value-card h3 {
+    font-size: 1.5rem;
+    color: #c9a84c;
+    margin-bottom: 0.5rem;
+}
+
+.ec-pastor-profile {
+    display: flex;
+    gap: 3rem;
+    align-items: center;
+    background: var(--ec-parchment-soft);
+    border-radius: 12px;
+    padding: 2.5rem;
+    margin: 2rem 0;
+}
+
+.ec-pastor-image {
+    flex: 0 0 250px;
+}
+
+.ec-pastor-info h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+}
+
+.ec-pastor-info .ec-role {
+    color: #c9a84c;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.ec-events-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.ec-event-item {
+    display: flex;
+    gap: 2rem;
+    background: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+}
+
+.ec-event-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+}
+
+.ec-event-date {
+    flex: 0 0 120px;
+    background: linear-gradient(135deg, #1a1a2e 0%, #2a2a48 100%);
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.ec-event-date .ec-day {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #c9a84c;
+}
+
+.ec-event-date .ec-month {
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.ec-event-info {
+    flex: 1;
+    padding: 1.5rem;
+}
+
+.ec-event-info h3 {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+}
+
+.ec-event-meta {
+    display: flex;
+    gap: 1.5rem;
+    font-size: 0.875rem;
+    color: #666;
+    margin-bottom: 0.75rem;
+}
+
+.ec-sermons-archive {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+}
+
+.ec-ministry-detail {
+    display: flex;
+    gap: 3rem;
+    margin-bottom: 3rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid #eee;
+}
+
+.ec-ministry-detail:nth-child(even) { flex-direction: row-reverse; }
+.ec-ministry-detail:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+.ec-ministry-detail-image { flex: 1; }
+.ec-ministry-detail-image img { border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.12); }
+.ec-ministry-detail-content { flex: 1; }
+.ec-ministry-detail-content h2 { font-size: 2rem; margin-bottom: 0.5rem; }
+.ec-ministry-detail-content .ec-slogan { color: #c9a84c; font-style: italic; font-weight: 500; margin-bottom: 1.5rem; display: block; }
+
+.ec-map-embed {
+    margin-top: 2rem;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+}
+
+.ec-map-embed iframe { width: 100%; height: 400px; border: none; display: block; }
+
+/* ============================================
+   CONTACT SECTION & FORM
+   ============================================ */
+.ec-section-header {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto 3rem;
+}
+
+.ec-section-header .ec-section-desc {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.ec-contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.ec-contact-card {
+    background: var(--ec-parchment-soft);
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.ec-contact-card:hover {
+    background: #ffffff;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+    transform: translateY(-5px);
+}
+
+.ec-contact-icon {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 1.25rem;
+    background: linear-gradient(135deg, #c9a84c 0%, #a0853a 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-size: 1.5rem;
+}
+
+.ec-contact-card h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.ec-contact-card p {
+    font-size: 0.9rem;
+    color: #555;
+    margin: 0;
+    line-height: 1.6;
+}
+
+.ec-contact-card a { color: #555; }
+.ec-contact-card a:hover { color: #c9a84c; }
+
+.ec-contact-form-wrap {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.ec-contact-form .ec-form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.ec-form-group {
+    margin-bottom: 1.5rem;
+}
+
+.ec-form-group label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #1a1a2e;
+    margin-bottom: 0.5rem;
+}
+
+.ec-form-group input,
+.ec-form-group textarea {
+    width: 100%;
+    padding: 0.875rem 1.25rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: #ffffff;
+    color: #1a1a2e;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+}
+
+.ec-form-group textarea {
+    min-height: 150px;
+    resize: vertical;
+}
+
+.ec-form-group input:focus,
+.ec-form-group textarea:focus {
+    outline: none;
+    border-color: #c9a84c;
+    box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.15);
+}
+
+.ec-btn-submit {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.875rem 2.5rem;
+    background: #c9a84c;
+    color: #1a1a2e;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.ec-btn-submit:hover {
+    background: #a0853a;
+    color: #1a1a2e;
+    transform: translateY(-2px);
+}
+
+/* Honeypot: visually hidden but available to bots */
+.ec-hp-field {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
+/* Form status notices */
+.ec-form-notice {
+    padding: 1rem 1.25rem;
+    border-radius: 4px;
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+}
+
+.ec-form-notice-success {
+    background: #e6f4ea;
+    color: #1e7e44;
+    border: 1px solid #a3d9b6;
+}
+
+.ec-form-notice-error {
+    background: #fdeaea;
+    color: #b3261e;
+    border: 1px solid #f0b4b1;
+}
+
+/* ============================================
+   PER-PAGE ACCENTS (unique look per template)
+   ============================================ */
+
+/* About â€” editorial "story" treatment: gold side-bar headings */
+.ec-page-about .ec-content-block h2 {
+    border-bottom: none;
+    padding-bottom: 0;
+    padding-left: 1rem;
+    border-left: 4px solid var(--ec-gold);
+    display: block;
+}
+
+/* Sermons â€” message archive cards get a gold top edge */
+.ec-page-sermons .ec-sermon-card {
+    border-top: 3px solid var(--ec-gold);
+}
+
+/* Events â€” list rows reveal a gold rail on hover */
+.ec-page-events .ec-event-item {
+    border-left: 4px solid transparent;
+}
+.ec-page-events .ec-event-item:hover {
+    border-left-color: var(--ec-gold);
+}
+
+/* Ministries â€” alternating tinted detail rows */
+.ec-page-ministries .ec-ministry-detail:nth-child(odd) {
+    background: #faf8f2;
+    border-radius: 16px;
+    padding: 2rem;
+}
+
+/* Contact â€” page cards adopt a cool blue icon tone to match the header mood */
+.ec-page-contact .ec-contact-icon {
+    background: linear-gradient(135deg, #2a4d8f 0%, #1a1a2e 100%);
+}
+
+/* ============================================
+   EDITORIAL PAGE DESIGN
+   Lifts the editor-driven page content out of "raw" prose into a
+   designed, magazine-style layout â€” while staying fully editable.
+   ============================================ */
+.ec-page-content .ec-content-block {
+    max-width: 840px;
+}
+
+/* Lead: the opening paragraph reads larger and darker */
+.ec-page-content .ec-content-block > p:first-of-type {
+    font-size: 1.25rem;
+    line-height: 1.8;
+    color: #2a2a3a;
+}
+
+/* Section headings become elegant markers with a gold "eyebrow" rule */
+.ec-page-content .ec-content-block h2 {
+    position: relative;
+    display: block;
+    border: none;
+    padding: 0;
+    margin: 3.25rem 0 1.25rem;
+    font-size: 2rem;
+    line-height: 1.2;
+    color: var(--ec-navy);
+}
+
+.ec-page-content .ec-content-block h2::before {
+    content: "\f06c"; /* Font Awesome leaf â€” the "graft" motif */
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    display: block;
+    font-size: 1.05rem;
+    line-height: 1;
+    color: var(--ec-gold);
+    margin-bottom: 0.75rem;
+}
+
+.ec-page-content .ec-content-block > h2:first-child,
+.ec-page-content .ec-content-block > *:first-child h2 {
+    margin-top: 0;
+}
+
+.ec-page-content .ec-content-block h3 {
+    font-size: 1.3rem;
+    margin: 2rem 0 0.75rem;
+    color: var(--ec-navy);
+}
+
+/* Lists become tidy "check" cards */
+.ec-page-content .ec-content-block ul {
+    list-style: none;
+    padding: 0;
+    margin: 1.75rem 0;
+    display: grid;
+    gap: 0.75rem;
+}
+
+.ec-page-content .ec-content-block ul li {
+    position: relative;
+    padding: 1rem 1.25rem 1rem 3.4rem;
+    border: 1px solid #ececf0;
+    border-radius: 12px;
+    background: var(--ec-parchment-soft);
+    font-size: 1.02rem;
+    color: #444;
+    line-height: 1.6;
+    transition: all 0.25s ease;
+}
+
+.ec-page-content .ec-content-block ul li:hover {
+    border-color: rgba(201, 168, 76, 0.55);
+    box-shadow: 0 8px 24px rgba(13, 21, 38, 0.06);
+    transform: translateY(-2px);
+}
+
+.ec-page-content .ec-content-block ul li::before {
+    content: "\f00c";
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    position: absolute;
+    left: 1rem;
+    top: 1rem;
+    width: 1.6rem;
+    height: 1.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--ec-gold), var(--ec-gold-dark));
+    color: #ffffff;
+    font-size: 0.7rem;
+}
+
+/* Premium pull-quote (WordPress quote block) */
+.ec-page-content .ec-content-block blockquote,
+.ec-page-content .ec-content-block .wp-block-quote {
+    position: relative;
+    margin: 2.5rem 0;
+    padding: 2rem 2rem 2rem 3.75rem;
+    background: linear-gradient(135deg, #faf8f2 0%, #ffffff 100%);
+    border-left: 4px solid var(--ec-gold);
+    border-radius: 0 14px 14px 0;
+    box-shadow: 0 10px 34px rgba(13, 21, 38, 0.06);
+    font-size: 1.3rem;
+    font-style: italic;
+    line-height: 1.55;
+    color: var(--ec-navy);
+}
+
+.ec-page-content .ec-content-block blockquote::before {
+    content: "\201C";
+    position: absolute;
+    left: 1.1rem;
+    top: 0.6rem;
+    font-family: Georgia, serif;
+    font-size: 4rem;
+    line-height: 1;
+    color: rgba(201, 168, 76, 0.4);
+}
+
+.ec-page-content .ec-content-block blockquote p {
+    margin: 0;
+    font-size: inherit;
+    color: inherit;
+    line-height: inherit;
+}
+
+/* Images in the editor get rounded corners and a soft shadow */
+.ec-page-content .ec-content-block img,
+.ec-page-content .ec-content-block .wp-block-image img {
+    border-radius: 14px;
+    box-shadow: 0 14px 44px rgba(13, 21, 38, 0.14);
+}
+
+.ec-page-content .ec-content-block .wp-block-image {
+    margin: 2.25rem 0;
+}
+
+/* Ministries: the line right under each heading is treated as a slogan */
+.ec-page-ministries .ec-content-block h2 + p {
+    margin-top: -0.4rem;
+    color: var(--ec-gold);
+    font-style: italic;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+/* Stat band (used on the About page) */
+.ec-stats-band {
+    max-width: 840px;
+    margin: 0 auto 3rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    text-align: center;
+}
+
+.ec-stat {
+    background: linear-gradient(135deg, #0d1526 0%, #1a1a2e 100%);
+    color: #ffffff;
+    border-radius: 14px;
+    padding: 1.75rem 1rem;
+}
+
+.ec-stat .ec-stat-num {
+    font-family: 'Inter', sans-serif;
+    font-size: 2.25rem;
+    font-weight: 800;
+    color: var(--ec-gold);
+    line-height: 1;
+    margin-bottom: 0.35rem;
+}
+
+.ec-stat .ec-stat-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* ============================================
+   SHARED CONTENT COMPONENTS
+   ============================================ */
+
+/* Lead / intro paragraph */
+.ec-lead {
+    font-size: 1.25rem;
+    line-height: 1.7;
+    color: #444;
+}
+
+/* Pull quote */
+.ec-pullquote {
+    font-size: 1.4rem;
+    font-style: italic;
+    color: var(--ec-gold);
+    line-height: 1.5;
+    border-left: 4px solid var(--ec-gold);
+    padding: 0.5rem 0 0.5rem 1.5rem;
+    margin: 2rem 0;
+}
+
+/* Card icon badge (used on belief / program cards) */
+.ec-card-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, var(--ec-gold) 0%, var(--ec-gold-dark) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+}
+
+/* Call-to-action band */
+.ec-cta-band {
+    max-width: 920px;
+    margin: 3.5rem auto 0;
+    padding: 3.5rem 2rem;
+    text-align: center;
+    color: #ffffff;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #0d1526 0%, #1a1a2e 60%, #2a2a48 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.ec-cta-band h2 { color: #ffffff; }
+
+.ec-cta-band p {
+    color: rgba(255, 255, 255, 0.72);
+    max-width: 600px;
+    margin: 0 auto 1.75rem;
+}
+
+/* ============================================
+   BIBLE COLLEGE PAGE
+   ============================================ */
+.ec-page-college .ec-belief-card { text-align: left; }
+
+/* ============================================
+   OUTREACH PAGE
+   ============================================ */
+.ec-outreach-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin-bottom: 1rem;
+}
+
+.ec-outreach-arm {
+    display: flex;
+    gap: 2.5rem;
+    align-items: flex-start;
+    background: var(--ec-parchment-soft);
+    border-radius: 18px;
+    padding: 2.5rem;
+    transition: all 0.3s ease;
+}
+
+.ec-outreach-arm:hover {
+    background: #ffffff;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+}
+
+.ec-outreach-arm:nth-child(even) {
+    flex-direction: row-reverse;
+}
+
+.ec-outreach-icon {
+    flex: 0 0 88px;
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--ec-gold) 0%, var(--ec-gold-dark) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-size: 2rem;
+}
+
+.ec-outreach-body { flex: 1; }
+
+.ec-outreach-body h2 {
+    font-size: 1.75rem;
+    margin-bottom: 0.5rem;
+}
+
+.ec-outreach-body .ec-pullquote { margin-bottom: 0; }
+
+/* ============================================
+   SERVICE TIME CARDS (Contact page)
+   ============================================ */
+.ec-service-times-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+}
+
+.ec-service-time-card {
+    text-align: center;
+    background: var(--ec-parchment-soft);
+    border-radius: 12px;
+    padding: 2rem 1.5rem;
+    border-top: 3px solid var(--ec-gold);
+    transition: all 0.3s ease;
+}
+
+.ec-service-time-card:hover {
+    background: #ffffff;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    transform: translateY(-5px);
+}
+
+.ec-service-time-card i {
+    font-size: 1.75rem;
+    color: var(--ec-gold);
+    margin-bottom: 1rem;
+}
+
+.ec-service-time-card h3 {
+    font-size: 1.15rem;
+    margin-bottom: 0.5rem;
+}
+
+.ec-service-day {
+    font-weight: 600;
+    color: #1a1a2e;
+    margin-bottom: 0.25rem;
+}
+
+.ec-service-hours {
+    color: #888;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+@media screen and (max-width: 1024px) {
+    .ec-footer-widgets { grid-template-columns: 1fr 1fr; }
+    .ec-events-grid { grid-template-columns: repeat(2, 1fr); }
+    .ec-ministry-grid-alt { grid-template-columns: repeat(2, 1fr); }
+    .ec-sermon-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media screen and (max-width: 768px) {
+    .ec-menu-toggle { display: flex; }
+    .ec-main-nav {
+        position: absolute;
+        top: 100%; left: 0; width: 100%;
+        background: rgba(26, 26, 46, 0.98);
+        max-height: 0; overflow: hidden;
+        transition: max-height 0.4s ease;
+    }
+    .ec-main-nav.active { max-height: 500px; }
+    .ec-main-nav ul { flex-direction: column; padding: 1.5rem; gap: 0; }
+    .ec-main-nav li { border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+    .ec-main-nav a { display: block; padding: 1rem 0; }
+
+    .ec-hero-script { font-size: 3.4rem; }
+    .ec-hero-block { font-size: 3.4rem; }
+    .ec-hero-features-inner { grid-template-columns: repeat(2, 1fr); gap: 2rem 1.5rem; }
+    .ec-feature-item:not(:last-child)::after { display: none; }
+
+    .ec-welcome, .ec-services-row, .ec-giving-content { flex-direction: column; gap: 2rem; }
+    .ec-col-6, .ec-col-4, .ec-col-3 { flex: 0 0 100%; max-width: 100%; }
+    .ec-values-row { grid-template-columns: 1fr; }
+    .ec-pastor-profile { flex-direction: column; text-align: center; }
+    .ec-pastor-image { flex: 0 0 auto; }
+    .ec-event-item { flex-direction: column; }
+    .ec-event-date { flex: 0 0 auto; flex-direction: row; gap: 0.5rem; padding: 1rem; }
+    .ec-ministry-detail, .ec-ministry-detail:nth-child(even) { flex-direction: column; }
+    .ec-footer-widgets { grid-template-columns: 1fr; gap: 2rem; }
+    .ec-footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
+    .ec-newsletter-inner { flex-direction: column; gap: 1.5rem; }
+    .ec-newsletter-form { width: 100%; max-width: none; }
+    .ec-events-grid { grid-template-columns: 1fr; }
+    .ec-ministry-grid-alt { grid-template-columns: 1fr; }
+    .ec-sermon-grid { grid-template-columns: 1fr; }
+    .ec-services-right { grid-template-columns: 1fr; }
+    .ec-hero-buttons { flex-direction: column; align-items: flex-start; }
+    .ec-contact-form .ec-form-row { grid-template-columns: 1fr; }
+    .ec-outreach-arm,
+    .ec-outreach-arm:nth-child(even) { flex-direction: column; gap: 1.5rem; text-align: center; }
+    .ec-outreach-icon { margin: 0 auto; }
+    .ec-outreach-body .ec-pullquote { text-align: left; }
+}
+
+@media screen and (max-width: 480px) {
+    .ec-hero-script { font-size: 2.5rem; }
+    .ec-hero-block { font-size: 2.5rem; }
+    .ec-hero-features-inner { grid-template-columns: 1fr; text-align: center; }
+    .ec-stats-band { grid-template-columns: 1fr; }
+    .ec-page-content .ec-content-block blockquote,
+    .ec-page-content .ec-content-block .wp-block-quote { padding: 1.5rem 1.25rem 1.5rem 3rem; font-size: 1.15rem; }
+    .ec-page-content .ec-content-block > p:first-of-type { font-size: 1.1rem; }
+    .ec-section { padding: 3rem 0; }
+    .ec-section-title { font-size: 1.75rem; }
+    .ec-page-header h1 { font-size: 2rem; }
+    .ec-welcome-content h2 { font-size: 1.75rem; }
+    .ec-giving-text h2 { font-size: 1.75rem; }
+    .ec-testimony-text { font-size: 1.15rem; }
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+.ec-text-center { text-align: center; }
+.ec-text-left { text-align: left; }
+.ec-text-right { text-align: right; }
+.ec-mb-0 { margin-bottom: 0; }
+.ec-mb-1 { margin-bottom: 1rem; }
+.ec-mb-2 { margin-bottom: 2rem; }
+.ec-mb-3 { margin-bottom: 3rem; }
+.ec-mt-1 { margin-top: 1rem; }
+.ec-mt-2 { margin-top: 2rem; }
+.ec-mt-3 { margin-top: 3rem; }
+
+/* ============================================================
+   EMANU SKIN
+   A faithful re-skin of the Emanu "Home v3" church theme:
+   warm ivory canvas, deep-crimson accent, Phudu display set
+   in uppercase, Instrument Sans body. Loaded last so it sets
+   the look across every component.
+   ============================================================ */
+:root {
+    --em-bg:      #F5F3EC;  /* warm ivory canvas        */
+    --em-card:    #FFFFFF;  /* card / panel surface     */
+    --em-ink:     #010101;  /* near-black headings       */
+    --em-body:    #676565;  /* body text                 */
+    --em-accent:  #B0061F;  /* deep crimson accent       */
+    --em-accent-d:#85041733; /* faint crimson wash       */
+    --em-dark:    #0E0C0D;  /* dark sections / footer    */
+    --em-line:    rgba(1, 1, 1, 0.10);
+    --em-line-d:  rgba(255, 255, 255, 0.12);
+    --em-display: 'Phudu', 'Inter', sans-serif;
+    --em-body-font: 'Instrument Sans', 'Inter', sans-serif;
+}
+
+/* --- Base canvas & type --- */
+body {
+    background-color: var(--em-bg);
+    color: var(--em-body);
+    font-family: var(--em-body-font);
+    font-weight: 400;
+    line-height: 1.65;
+}
+a { color: var(--em-accent); }
+a:hover { color: #7d0416; }
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--em-display);
+    color: var(--em-ink);
+    font-weight: 600;
+    line-height: 1.04;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+p { color: inherit; }
+
+/* --- Section surfaces (ivory / white alternating) --- */
+.ec-section-white { background: var(--em-bg); }
+.ec-section-light { background: var(--em-card); }
+.ec-section-dark  { background: var(--em-dark); color: #ffffff; }
+.ec-section-dark h2, .ec-section-dark h3, .ec-section-dark h4 { color: #ffffff; }
+
+/* --- Eyebrow label --- */
+.ec-section-label {
+    font-family: var(--em-body-font);
+    font-weight: 600;
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--em-accent);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 1rem;
+}
+.ec-section-label::before {
+    content: "";
+    width: 26px;
+    height: 2px;
+    background: var(--em-accent);
+}
+.ec-section-dark .ec-section-label { color: #ff6b7e; }
+
+.ec-section-title {
+    color: var(--em-ink);
+    font-size: 2.6rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    line-height: 1.05;
+}
+.ec-section-title .ec-gold {
+    color: var(--em-accent);
+    font-family: var(--em-display);
+    font-style: normal;
+    font-weight: 600;
+}
+.ec-section-desc { color: var(--em-body); font-size: 1.02rem; }
+.ec-section-dark .ec-section-desc { color: rgba(255,255,255,0.72); }
+.ec-view-all, .ec-view-link, .ec-learn-more {
+    color: var(--em-accent);
+    font-family: var(--em-body-font);
+    font-weight: 600;
+}
+.ec-view-all:hover, .ec-view-link:hover, .ec-learn-more:hover { color: #7d0416; }
+
+/* --- Buttons: crimson pill, uppercase Phudu --- */
+.ec-btn, .ec-btn-small, .ec-btn-new {
+    font-family: var(--em-display);
+    font-weight: 600;
+    font-style: normal;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 9999px;
+    font-size: 0.95rem;
+    padding: 0.85rem 2rem;
+}
+.ec-btn::before, .ec-btn::after { content: none; }
+.ec-btn-orange, .ec-btn-gold, .ec-btn-small {
+    background: var(--em-accent);
+    color: #ffffff;
+    box-shadow: none;
+}
+.ec-btn-orange:hover, .ec-btn-gold:hover, .ec-btn-small:hover {
+    background: var(--em-ink);
+    color: #ffffff;
+    transform: translateY(-2px);
+}
+.ec-btn-outline {
+    border: 2px solid var(--em-accent);
+    color: var(--em-accent);
+    background: transparent;
+}
+.ec-btn-outline:hover { background: var(--em-accent); color: #ffffff; }
+.ec-section-dark .ec-btn-outline { border-color: rgba(255,255,255,0.5); color: #ffffff; }
+.ec-section-dark .ec-btn-outline:hover { background: #ffffff; color: var(--em-ink); }
+.ec-btn-new { background: var(--em-accent); color: #ffffff; padding: 0.7rem 1.6rem; }
+.ec-btn-new:hover { background: var(--em-ink); color: #ffffff; }
+
+/* --- Header --- */
+.ec-header.scrolled {
+    background: rgba(245, 243, 236, 0.96);
+    border-bottom: 1px solid var(--em-line);
+    box-shadow: 0 6px 24px rgba(1,1,1,0.05);
+}
+.ec-header .ec-main-nav ul li a { color: var(--em-ink); font-family: var(--em-body-font); font-weight: 600; }
+.ec-header .ec-main-nav ul li a:hover { color: var(--em-accent); }
+
+/* --- Hero --- */
+.ec-hero-overlay {
+    background:
+        linear-gradient(90deg, rgba(1,1,1,0.72) 0%, rgba(1,1,1,0.40) 55%, rgba(176,6,31,0.20) 100%),
+        linear-gradient(to top, rgba(1,1,1,0.78) 0%, rgba(1,1,1,0) 50%);
+}
+.ec-hero-title, .ec-hero-script, .ec-hero-block { color: #ffffff; font-family: var(--em-display); text-transform: uppercase; font-style: normal; }
+.ec-hero-script { font-weight: 500; }
+.ec-hero-block { font-weight: 700; }
+.ec-hero-desc { color: rgba(255,255,255,0.85); font-family: var(--em-body-font); }
+.ec-hero-rule { background: var(--em-accent); }
+.ec-hero-features { background: rgba(255,255,255,0.97); border-top: none; box-shadow: 0 -10px 40px rgba(1,1,1,0.06); }
+.ec-feature-item i { color: var(--em-accent); }
+.ec-feature-item h4 { color: var(--em-ink); }
+.ec-feature-item p { color: var(--em-body); }
+.ec-feature-item:not(:last-child)::after { background: var(--em-line); }
+
+/* --- Welcome / About text --- */
+.ec-welcome-content h2 { color: var(--em-ink); }
+.ec-welcome-content p { color: var(--em-body); }
+.ec-btn-small { display: inline-flex; }
+
+/* --- Cards: sermons, events, contact, service-time --- */
+.ec-sermon-card, .ec-event-card {
+    background: var(--em-card);
+    border: 1px solid var(--em-line);
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(1,1,1,0.05);
+}
+.ec-sermon-card:hover, .ec-event-card:hover { box-shadow: 0 22px 50px rgba(1,1,1,0.12); transform: translateY(-6px); }
+.ec-sermon-info h3 a, .ec-event-card-info h3, .ec-event-card-info h3 a { color: var(--em-ink); }
+.ec-sermon-info h3 a:hover { color: var(--em-accent); }
+.ec-sermon-meta, .ec-event-card-info .ec-event-time { color: var(--em-body); }
+.ec-event-card-info p { color: var(--em-body); }
+.ec-event-date-badge { background: #ffffff; box-shadow: 0 10px 24px rgba(1,1,1,0.18); }
+.ec-event-date-badge .ec-day { color: var(--em-accent); }
+.ec-event-date-badge .ec-month { color: var(--em-ink); }
+.ec-sermon-play-btn, .ec-sermon-play { background: var(--em-accent); color: #ffffff; }
+
+/* Service-times cards sit on the dark band */
+.ec-service-card-alt { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.12); }
+.ec-service-card-alt:hover { background: rgba(255,255,255,0.1); }
+.ec-service-card-alt i { color: #ffffff; }
+.ec-service-card-alt .ec-time { color: #ff6b7e; }
+.ec-service-card-alt h3 { color: #ffffff; }
+.ec-service-card-alt p { color: rgba(255,255,255,0.6); }
+
+/* Ministries cards on dark band */
+.ec-ministry-card-alt { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 16px; }
+.ec-ministry-card-alt:hover { background: rgba(255,255,255,0.09); transform: translateY(-6px); }
+.ec-ministry-card-alt i { color: #ff6b7e; }
+.ec-ministry-card-alt h3 { color: #ffffff; }
+.ec-ministry-card-alt p { color: rgba(255,255,255,0.65); }
+.ec-section-dark .ec-learn-more { color: #ff6b7e; }
+
+/* --- Newsletter & footer --- */
+.ec-newsletter { background: var(--em-accent); }
+.ec-newsletter h3, .ec-newsletter p { color: #ffffff; }
+.ec-newsletter-icon { color: #ffffff; }
+.ec-newsletter-form button { background: var(--em-ink); color: #ffffff; }
+.ec-newsletter-form button:hover { background: #ffffff; color: var(--em-accent); }
+.ec-footer { background: var(--em-dark); color: rgba(255,255,255,0.7); }
+.ec-footer h3, .ec-footer h4 { color: #ffffff; }
+.ec-footer-social a:hover { background: var(--em-accent); color: #ffffff; }
+
+/* --- Contact cards & forms --- */
+.ec-contact-card { background: var(--em-card); border: 1px solid var(--em-line); border-radius: 16px; }
+.ec-contact-card:hover { box-shadow: 0 18px 44px rgba(1,1,1,0.1); }
+.ec-contact-icon { color: var(--em-accent); }
+.ec-contact-card h3 { color: var(--em-ink); }
+.ec-contact-card p, .ec-contact-card a { color: var(--em-body); }
+.ec-contact-card a:hover { color: var(--em-accent); }
+.ec-form-group input, .ec-form-group textarea { background: var(--em-card); border-color: var(--em-line); color: var(--em-ink); }
+.ec-form-group input:focus, .ec-form-group textarea:focus { border-color: var(--em-accent); box-shadow: 0 0 0 3px var(--em-accent-d); }
+.ec-form-group label { color: var(--em-ink); }
+
+/* ============================================================
+   EMANU SKIN — HOME v3 SECTIONS
+   ============================================================ */
+
+/* --- Affiliations strip --- */
+.ec-affiliations {
+    background: var(--em-card);
+    border-top: 1px solid var(--em-line);
+    border-bottom: 1px solid var(--em-line);
+    padding: 2.5rem 0;
+    text-align: center;
+}
+.ec-affiliations-eyebrow {
+    display: block;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--em-body);
+    margin-bottom: 1.25rem;
+    font-weight: 600;
+}
+.ec-affiliations-list {
+    list-style: none; margin: 0; padding: 0;
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
+    gap: 0.75rem 2.75rem;
+}
+.ec-affiliations-list li {
+    font-family: var(--em-display);
+    text-transform: uppercase;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--em-ink);
+    opacity: 0.78;
+    position: relative;
+    white-space: nowrap;
+}
+.ec-affiliations-list li:not(:last-child)::after {
+    content: ""; position: absolute; right: -1.45rem; top: 50%;
+    width: 6px; height: 6px; margin-top: -3px; border-radius: 50%;
+    background: var(--em-accent);
+}
+
+/* --- About section --- */
+.ec-about-grid { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 4rem; align-items: center; }
+.ec-about-media { position: relative; }
+.ec-about-media img, .ec-about-media-fallback {
+    width: 100%; border-radius: 18px; aspect-ratio: 4 / 5; object-fit: cover;
+    border: 1px solid var(--em-line);
+}
+.ec-about-media-fallback {
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(150deg, #fff 0%, #ece8dd 100%);
+    color: var(--em-accent); font-size: 4.5rem;
+}
+.ec-about-media-tag {
+    position: absolute; left: 1.5rem; bottom: 1.5rem;
+    background: var(--em-accent); color: #ffffff;
+    padding: 0.9rem 1.5rem; border-radius: 14px; text-align: center; line-height: 1;
+    box-shadow: 0 14px 30px rgba(176,6,31,0.35);
+}
+.ec-about-media-tag .ec-about-tag-since { display: block; font-size: 0.6rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 0.35rem; opacity: 0.85; }
+.ec-about-media-tag .ec-about-tag-year { font-family: var(--em-display); font-size: 1.8rem; font-weight: 600; }
+.ec-about-content .ec-section-title { margin-bottom: 1.25rem; }
+.ec-about-content > p { color: var(--em-body); max-width: 36rem; }
+.ec-about-vision {
+    margin: 1.75rem 0 2rem; padding: 1.6rem 1.85rem;
+    background: var(--em-card); border: 1px solid var(--em-line);
+    border-left: 4px solid var(--em-accent); border-radius: 14px;
+}
+.ec-about-vision-title { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; color: var(--em-accent); margin-bottom: 0.9rem; font-family: var(--em-body-font); font-weight: 700; }
+.ec-about-vision ul { list-style: none; margin: 0; padding: 0; }
+.ec-about-vision li { display: flex; align-items: baseline; gap: 0.7rem; color: var(--em-ink); padding: 0.4rem 0; font-weight: 500; }
+.ec-about-vision li i { color: var(--em-accent); font-size: 0.85rem; }
+
+/* Stat counters */
+.ec-stats-band { max-width: 840px; margin: 0 auto 3rem; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; text-align: center; }
+.ec-stats-band-wide { max-width: none; grid-template-columns: repeat(4, 1fr); margin-top: 3.5rem; margin-bottom: 0; }
+.ec-stat { background: var(--em-card); border: 1px solid var(--em-line); border-radius: 16px; padding: 2rem 1rem; box-shadow: 0 10px 30px rgba(1,1,1,0.04); }
+.ec-stat .ec-stat-num { font-family: var(--em-display); font-size: 2.6rem; font-weight: 700; color: var(--em-accent); line-height: 1; margin-bottom: 0.4rem; }
+.ec-stat .ec-stat-num.ec-stat-word { text-transform: uppercase; }
+.ec-stat .ec-stat-label { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--em-body); }
+
+/* --- Pillars ("What We Do") --- */
+.ec-pillars-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.75rem; }
+.ec-pillar-card {
+    background: var(--em-card); border: 1px solid var(--em-line); border-radius: 18px;
+    padding: 2.4rem 2rem; transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 10px 30px rgba(1,1,1,0.04);
+}
+.ec-pillar-card:hover { transform: translateY(-8px); box-shadow: 0 26px 55px rgba(1,1,1,0.12); }
+.ec-pillar-icon {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 64px; height: 64px; border-radius: 50%;
+    background: var(--em-accent); color: #ffffff; font-size: 1.5rem; margin-bottom: 1.5rem;
+}
+.ec-pillar-card h3 { font-size: 1.5rem; color: var(--em-ink); margin-bottom: 0.7rem; }
+.ec-pillar-card p { color: var(--em-body); margin-bottom: 1.3rem; }
+
+/* --- Beliefs --- */
+.ec-beliefs-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.75rem; margin: 2rem 0; }
+.ec-beliefs .ec-belief-card {
+    background: var(--em-card); border: 1px solid var(--em-line); border-radius: 18px;
+    padding: 2rem; transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.ec-beliefs .ec-belief-card:hover { transform: translateY(-6px); box-shadow: 0 22px 50px rgba(1,1,1,0.1); }
+.ec-beliefs .ec-belief-card .ec-number {
+    width: auto; height: auto; background: none; border-radius: 0;
+    font-family: var(--em-display); font-size: 2.4rem; font-weight: 700;
+    color: var(--em-accent); margin-bottom: 0.6rem; justify-content: flex-start; display: block;
+}
+.ec-beliefs .ec-belief-card h3 { font-size: 1.3rem; color: var(--em-ink); }
+.ec-beliefs .ec-belief-card p { color: var(--em-body); }
+
+/* --- Give --- */
+.ec-give { padding: 5rem 0; background: var(--em-dark); color: rgba(255,255,255,0.72); }
+.ec-give .ec-section-label { color: #ff6b7e; }
+.ec-give-inner { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 4rem; align-items: center; }
+.ec-give-content .ec-section-title { color: #ffffff; margin-bottom: 1.1rem; }
+.ec-give-content > p { color: rgba(255,255,255,0.72); max-width: 34rem; }
+.ec-give-verse {
+    font-family: var(--em-display); text-transform: none; font-style: normal;
+    font-size: 1.3rem; line-height: 1.5; color: #ffffff;
+    border-left: 4px solid var(--em-accent); padding: 0.5rem 0 0.5rem 1.5rem; margin: 1.75rem 0;
+}
+.ec-give-verse cite { display: block; font-size: 0.8rem; font-style: normal; letter-spacing: 1.5px; text-transform: uppercase; color: #ff6b7e; margin-top: 0.75rem; font-family: var(--em-body-font); }
+.ec-give-actions { display: flex; flex-wrap: wrap; gap: 1rem; }
+.ec-give-ways { list-style: none; margin: 0; padding: 0; display: grid; gap: 1rem; }
+.ec-give-ways li {
+    display: flex; gap: 1.25rem; align-items: flex-start;
+    background: rgba(255,255,255,0.05); border: 1px solid var(--em-line-d); border-radius: 14px;
+    padding: 1.5rem; transition: border-color 0.3s ease, transform 0.3s ease;
+}
+.ec-give-ways li:hover { border-color: rgba(255,107,126,0.5); transform: translateX(4px); }
+.ec-give-way-icon {
+    flex: 0 0 auto; display: inline-flex; align-items: center; justify-content: center;
+    width: 50px; height: 50px; border-radius: 50%; background: var(--em-accent); color: #ffffff; font-size: 1.2rem;
+}
+.ec-give-ways h3 { font-size: 1.15rem; color: #ffffff; margin-bottom: 0.25rem; }
+.ec-give-ways p { color: rgba(255,255,255,0.65); margin: 0; font-size: 0.92rem; }
+
+/* --- Blog --- */
+.ec-blog-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.75rem; }
+.ec-blog-card {
+    background: var(--em-card); border: 1px solid var(--em-line); border-radius: 18px; overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; box-shadow: 0 10px 30px rgba(1,1,1,0.04);
+}
+.ec-blog-card:hover { transform: translateY(-8px); box-shadow: 0 26px 55px rgba(1,1,1,0.12); }
+.ec-blog-thumb { display: block; aspect-ratio: 16 / 10; overflow: hidden; }
+.ec-blog-thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+.ec-blog-card:hover .ec-blog-thumb img { transform: scale(1.05); }
+.ec-blog-thumb-fallback { display: flex; align-items: center; justify-content: center; height: 100%; background: linear-gradient(135deg, #fff, #ece8dd); color: var(--em-accent); font-size: 2.25rem; }
+.ec-blog-info { padding: 1.6rem 1.7rem 1.85rem; }
+.ec-blog-meta { display: flex; align-items: center; gap: 0.6rem; font-size: 0.74rem; text-transform: uppercase; letter-spacing: 1px; color: var(--em-body); margin-bottom: 0.9rem; font-weight: 600; }
+.ec-blog-meta .ec-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--em-accent); }
+.ec-blog-info h3 { font-size: 1.3rem; line-height: 1.15; margin-bottom: 0.6rem; }
+.ec-blog-info h3 a { color: var(--em-ink); }
+.ec-blog-info h3 a:hover { color: var(--em-accent); }
+.ec-blog-info > p { color: var(--em-body); font-size: 0.95rem; margin-bottom: 1.1rem; text-transform: none; }
+
+/* --- Testimonials --- */
+.ec-testimonial-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.75rem; }
+.ec-tcard {
+    margin: 0; background: var(--em-card); border: 1px solid var(--em-line); border-radius: 18px;
+    padding: 2.1rem; display: flex; flex-direction: column; gap: 1.2rem; box-shadow: 0 10px 30px rgba(1,1,1,0.04);
+}
+.ec-tcard-stars { color: var(--em-accent); font-size: 0.9rem; letter-spacing: 2px; }
+.ec-tcard-text { margin: 0; color: var(--em-ink); font-family: var(--em-body-font); text-transform: none; font-style: normal; font-size: 1.05rem; line-height: 1.6; flex: 1; font-weight: 500; }
+.ec-tcard-author { display: flex; align-items: center; gap: 0.9rem; }
+.ec-tcard-avatar {
+    flex: 0 0 auto; width: 50px; height: 50px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--em-accent); color: #ffffff; font-family: var(--em-display); font-size: 1.4rem; font-weight: 600;
+}
+.ec-tcard-id { display: flex; flex-direction: column; line-height: 1.3; }
+.ec-tcard-name { color: var(--em-ink); font-weight: 700; font-family: var(--em-display); text-transform: uppercase; letter-spacing: 0.5px; }
+.ec-tcard-role { color: var(--em-body); font-size: 0.82rem; }
+
+/* --- Home v3 responsive --- */
+@media screen and (max-width: 900px) {
+    .ec-about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .ec-about-media { max-width: 460px; }
+    .ec-give-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+    .ec-stats-band-wide { grid-template-columns: repeat(2, 1fr); }
+    .ec-pillars-grid, .ec-blog-grid, .ec-testimonial-grid { grid-template-columns: 1fr; }
+    .ec-beliefs-grid { grid-template-columns: repeat(2, 1fr); }
+    .ec-section-title { font-size: 2.1rem; }
+}
+@media screen and (max-width: 600px) {
+    .ec-affiliations-list { gap: 0.5rem 1.5rem; }
+    .ec-affiliations-list li { font-size: 1.05rem; }
+    .ec-affiliations-list li:not(:last-child)::after { display: none; }
+    .ec-stats-band, .ec-stats-band-wide { grid-template-columns: 1fr; }
+    .ec-beliefs-grid { grid-template-columns: 1fr; }
+}
+
+/* ============================================================
+   EMANU SKIN — ABOUT PAGE
+   ============================================================ */
+
+/* --- Banner + breadcrumb --- */
+.ec-about-banner { min-height: 360px; margin-bottom: 0; }
+.ec-ph-about .ec-page-header-overlay {
+    background:
+        linear-gradient(180deg, rgba(1,1,1,0.45) 0%, rgba(1,1,1,0.7) 100%),
+        linear-gradient(115deg, rgba(176,6,31,0.45) 0%, rgba(1,1,1,0) 65%);
+}
+.ec-about-banner .ec-page-header-content h1 { color: #ffffff; font-size: 3.4rem; }
+.ec-breadcrumb {
+    display: inline-flex; align-items: center; gap: 0.6rem; margin-top: 0.75rem;
+    font-family: var(--em-body-font); font-size: 0.85rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 1.5px; color: rgba(255,255,255,0.85);
+}
+.ec-breadcrumb a { color: #ffffff; }
+.ec-breadcrumb a:hover { color: #ff6b7e; }
+.ec-breadcrumb span[aria-hidden] { color: var(--em-accent); }
+
+/* --- Story --- */
+.ec-about-story-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 4rem; align-items: center; }
+.ec-about-story-content > p { color: var(--em-body); margin-bottom: 1.75rem; }
+.ec-mv-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem; }
+.ec-mv-item {
+    background: var(--em-bg); border: 1px solid var(--em-line); border-radius: 14px; padding: 1.6rem;
+}
+.ec-mv-icon {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 48px; height: 48px; border-radius: 50%; background: var(--em-accent);
+    color: #ffffff; font-size: 1.15rem; margin-bottom: 1rem;
+}
+.ec-mv-item h3 { font-size: 1.25rem; color: var(--em-ink); margin-bottom: 0.5rem; }
+.ec-mv-item p { color: var(--em-body); font-size: 0.92rem; margin: 0; }
+.ec-about-story-media { position: relative; }
+.ec-about-story-media img, .ec-about-story-media .ec-about-media-fallback {
+    width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 18px; border: 1px solid var(--em-line);
+}
+.ec-about-pastor-tag {
+    position: absolute; left: 1.25rem; bottom: 1.25rem; right: 1.25rem;
+    display: flex; align-items: center; gap: 0.9rem;
+    background: rgba(255,255,255,0.96); border-radius: 14px; padding: 0.9rem 1.1rem;
+    box-shadow: 0 16px 40px rgba(1,1,1,0.18);
+}
+.ec-about-pastor-avatar {
+    flex: 0 0 auto; width: 46px; height: 46px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--em-accent); color: #ffffff; font-size: 1.1rem;
+}
+.ec-about-pastor-id { display: flex; flex-direction: column; line-height: 1.3; }
+.ec-about-pastor-name { font-family: var(--em-display); text-transform: uppercase; font-weight: 700; color: var(--em-ink); letter-spacing: 0.5px; }
+.ec-about-pastor-role { font-size: 0.8rem; color: var(--em-accent); font-weight: 600; }
+
+/* --- Beliefs 3-up --- */
+.ec-beliefs-grid-3 { grid-template-columns: repeat(3, 1fr); }
+.ec-about-foot-note { display: block; color: var(--em-body); margin-bottom: 0.5rem; font-size: 0.95rem; }
+
+/* --- Values + call box --- */
+.ec-values-grid { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 4rem; align-items: center; }
+.ec-values-content > p { color: var(--em-body); margin-bottom: 1.75rem; }
+.ec-value-list { list-style: none; margin: 0 0 2rem; padding: 0; display: grid; gap: 1rem; }
+.ec-value-list li { display: flex; gap: 1.1rem; align-items: flex-start; }
+.ec-value-list-icon {
+    flex: 0 0 auto; display: inline-flex; align-items: center; justify-content: center;
+    width: 52px; height: 52px; border-radius: 14px; background: var(--em-accent-d);
+    color: var(--em-accent); font-size: 1.2rem;
+}
+.ec-value-list h3 { font-size: 1.2rem; color: var(--em-ink); margin-bottom: 0.2rem; }
+.ec-value-list p { color: var(--em-body); margin: 0; font-size: 0.92rem; }
+.ec-values-media { position: relative; }
+.ec-values-img img, .ec-values-img .ec-about-media-fallback {
+    width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 18px; border: 1px solid var(--em-line);
+}
+.ec-call-box {
+    position: absolute; left: 50%; bottom: -1.5rem; transform: translateX(-50%);
+    display: inline-flex; align-items: center; gap: 0.9rem; white-space: nowrap;
+    background: var(--em-accent); color: #ffffff; padding: 1rem 1.6rem; border-radius: 14px;
+    box-shadow: 0 16px 36px rgba(176,6,31,0.35);
+}
+.ec-call-icon { font-size: 1.3rem; }
+.ec-call-label { display: block; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.9; }
+.ec-call-number { display: block; font-family: var(--em-display); font-size: 1.3rem; font-weight: 700; color: #ffffff; }
+.ec-call-number:hover { color: #ffffff; }
+
+/* --- Pastor feature --- */
+.ec-pastor-feature {
+    display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 3rem; align-items: center;
+    background: var(--em-card); border: 1px solid var(--em-line); border-radius: 20px; padding: 2.5rem;
+    box-shadow: 0 14px 40px rgba(1,1,1,0.05);
+}
+.ec-pastor-feature-media { position: relative; }
+.ec-pastor-feature-media img, .ec-pastor-feature-media .ec-about-media-fallback {
+    width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 16px; border: 1px solid var(--em-line);
+}
+.ec-pastor-social {
+    position: absolute; left: 50%; bottom: 0.9rem; transform: translateX(-50%);
+    display: flex; gap: 0.5rem; background: rgba(255,255,255,0.96); padding: 0.5rem 0.75rem;
+    border-radius: 999px; box-shadow: 0 10px 24px rgba(1,1,1,0.14);
+}
+.ec-pastor-social a {
+    width: 34px; height: 34px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center;
+    background: var(--em-bg); color: var(--em-ink);
+}
+.ec-pastor-social a:hover { background: var(--em-accent); color: #ffffff; }
+.ec-pastor-feature-body h3 { font-size: 1.8rem; color: var(--em-ink); margin-bottom: 0.3rem; }
+.ec-pastor-feature-role { display: inline-block; color: var(--em-accent); font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; font-size: 0.82rem; margin-bottom: 1.1rem; font-family: var(--em-body-font); }
+.ec-pastor-feature-body p { color: var(--em-body); }
+
+/* --- Impact --- */
+.ec-impact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+.ec-impact-content > p { color: var(--em-body); margin-bottom: 1.5rem; }
+.ec-impact-bullets { list-style: none; margin: 0 0 2rem; padding: 0; display: grid; gap: 0.85rem; }
+.ec-impact-bullets li { display: flex; align-items: baseline; gap: 0.75rem; color: var(--em-ink); font-weight: 500; }
+.ec-impact-bullets li i { color: var(--em-accent); font-size: 0.85rem; }
+.ec-impact-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+.ec-impact-stats .ec-stat:nth-child(1), .ec-impact-stats .ec-stat:nth-child(4) { transform: translateY(1.5rem); }
+
+/* --- Verse band --- */
+.ec-verse-band {
+    padding: 5.5rem 0; text-align: center;
+    background:
+        radial-gradient(circle at 50% 0%, rgba(176,6,31,0.18) 0%, rgba(14,12,13,0) 55%),
+        var(--em-dark);
+}
+.ec-verse-band .ec-section-label { color: #ff6b7e; justify-content: center; }
+.ec-verse-band .ec-section-label::before { display: none; }
+.ec-verse-inner { max-width: 820px; margin: 0 auto; }
+.ec-verse-band .ec-section-title { color: #ffffff; }
+.ec-verse-quote {
+    font-family: var(--em-display); text-transform: none; color: #ffffff;
+    font-size: 1.9rem; line-height: 1.35; margin: 1.5rem 0 2rem;
+}
+.ec-verse-quote cite {
+    display: block; font-family: var(--em-body-font); font-style: normal;
+    font-size: 0.85rem; letter-spacing: 2px; text-transform: uppercase; color: #ff6b7e; margin-top: 1rem;
+}
+
+/* --- FAQ accordion --- */
+.ec-faq-list { max-width: 860px; margin: 0 auto; display: grid; gap: 1rem; }
+.ec-faq-item {
+    background: var(--em-card); border: 1px solid var(--em-line); border-radius: 14px; overflow: hidden;
+}
+.ec-faq-item summary {
+    list-style: none; cursor: pointer; padding: 1.3rem 1.6rem;
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    font-family: var(--em-display); text-transform: uppercase; font-weight: 600; font-size: 1.1rem;
+    color: var(--em-ink); letter-spacing: 0.5px;
+}
+.ec-faq-item summary::-webkit-details-marker { display: none; }
+.ec-faq-item summary i {
+    flex: 0 0 auto; width: 32px; height: 32px; border-radius: 50%; background: var(--em-accent-d);
+    color: var(--em-accent); display: inline-flex; align-items: center; justify-content: center;
+    font-size: 0.85rem; transition: transform 0.3s ease;
+}
+.ec-faq-item[open] summary i { transform: rotate(45deg); background: var(--em-accent); color: #ffffff; }
+.ec-faq-answer { padding: 0 1.6rem 1.4rem; }
+.ec-faq-answer p { color: var(--em-body); margin: 0; }
+
+/* --- CTA band (Emanu crimson) --- */
+.ec-cta-band {
+    background:
+        radial-gradient(circle at 15% 0%, rgba(255,255,255,0.12) 0%, rgba(176,6,31,0) 55%),
+        linear-gradient(135deg, #B0061F 0%, #7d0416 100%);
+}
+.ec-cta-band h2 { color: #ffffff; }
+.ec-cta-band p { color: rgba(255,255,255,0.85); }
+.ec-cta-band .ec-btn-gold { background: #ffffff; color: var(--em-accent); }
+.ec-cta-band .ec-btn-gold:hover { background: var(--em-ink); color: #ffffff; }
+
+/* --- About responsive --- */
+@media screen and (max-width: 900px) {
+    .ec-about-story-grid, .ec-values-grid, .ec-impact-grid, .ec-pastor-feature { grid-template-columns: 1fr; gap: 2.5rem; }
+    .ec-beliefs-grid-3 { grid-template-columns: 1fr; }
+    .ec-about-story-media, .ec-values-media { max-width: 460px; }
+    .ec-values-media { margin: 0 auto 2rem; }
+    .ec-impact-stats .ec-stat:nth-child(1), .ec-impact-stats .ec-stat:nth-child(4) { transform: none; }
+    .ec-about-banner .ec-page-header-content h1 { font-size: 2.4rem; }
+}
+@media screen and (max-width: 600px) {
+    .ec-mv-grid { grid-template-columns: 1fr; }
+    .ec-impact-stats { grid-template-columns: 1fr; }
+    .ec-faq-item summary { font-size: 0.98rem; }
+}
+
+/* ============================================================
+   EMANU SKIN — HEADER + HERO (Home v3)
+   Dark transparent header over a near-black two-column hero.
+   ============================================================ */
+
+/* --- Header --- */
+.ec-header { padding: 1.4rem 0; }
+.ec-header-inner { max-width: 1280px; }
+.ec-header .ec-main-nav ul { gap: 2.25rem; }
+.ec-header .ec-main-nav ul li a {
+    color: #ffffff;
+    font-family: var(--em-body-font);
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0;
+    text-transform: none;
+}
+.ec-header .ec-main-nav ul li a:hover,
+.ec-header .ec-main-nav ul li.current-menu-item > a,
+.ec-header .ec-main-nav ul li.current_page_item > a,
+.ec-header .ec-main-nav ul li.current-menu-ancestor > a { color: var(--em-accent); }
+.ec-header .ec-main-nav ul li.menu-item-has-children > a::after {
+    content: "\f078";
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    font-size: 0.6rem;
+    margin-left: 0.45rem;
+    opacity: 0.85;
+}
+/* Scrolled = ivory bar with dark nav */
+.ec-header.scrolled { background: rgba(245, 243, 236, 0.97); }
+.ec-header.scrolled .ec-main-nav ul li a { color: var(--em-ink); }
+.ec-header.scrolled .ec-main-nav ul li a:hover,
+.ec-header.scrolled .ec-main-nav ul li.current-menu-item > a,
+.ec-header.scrolled .ec-main-nav ul li.current_page_item > a { color: var(--em-accent); }
+
+/* Donation pill (header CTA) with up-right arrow */
+.ec-btn-new {
+    background: var(--em-accent);
+    color: #ffffff;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 9999px;
+    font-family: var(--em-display);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+.ec-btn-new::after { content: " \2197"; font-weight: 700; }
+.ec-btn-new:hover { background: var(--em-ink); color: #ffffff; }
+.ec-menu-toggle span { background: #ffffff; }
+.ec-header.scrolled .ec-menu-toggle span { background: var(--em-ink); }
+
+/* --- Hero: two-column dark --- */
+.ec-hero.ec-hero-split {
+    min-height: auto;
+    display: block;
+    background: #0a0a0a;
+    color: #ffffff;
+    padding: 11rem 0 6rem;
+    overflow: hidden;
+}
+.ec-hero-pattern {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg width='28' height='49' viewBox='0 0 28 49' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M13.99 9.25l13 7.5v15l-13 7.5L1 31.75v-15l12.99-7.5zM3 17.5v12l10.39 6 10.61-6v-12l-10.61-6L3 17.5z' fill='%23ffffff' fill-opacity='0.035'/%3E%3C/svg%3E");
+}
+.ec-hero-split .ec-hero-grid {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4.5rem;
+    align-items: center;
+    width: 100%;
+}
+.ec-hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 999px;
+    padding: 0.5rem 1.1rem;
+    font-family: var(--em-body-font);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #ffffff;
+    margin-bottom: 1.75rem;
+}
+.ec-hero-badge-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--em-accent); }
+.ec-hero-heading {
+    font-family: var(--em-display);
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #ffffff;
+    font-size: 4rem;
+    line-height: 1.02;
+    letter-spacing: 0.5px;
+    margin-bottom: 1.5rem;
+}
+.ec-hero-heading span { display: block; }
+.ec-hero-split .ec-hero-desc {
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 1.05rem;
+    font-weight: 400;
+    line-height: 1.7;
+    max-width: 540px;
+    opacity: 1;
+    margin-bottom: 2.5rem;
+}
+.ec-hero-highlights { display: flex; gap: 2.5rem; flex-wrap: wrap; margin-bottom: 2.5rem; }
+.ec-hero-highlight { display: flex; align-items: center; gap: 1rem; max-width: 320px; }
+.ec-hero-highlight-icon {
+    flex: 0 0 auto;
+    width: 54px; height: 54px;
+    border-radius: 50%;
+    background: var(--em-accent);
+    color: #ffffff;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 1.2rem;
+}
+.ec-hero-highlight h4 {
+    margin: 0;
+    font-family: var(--em-display);
+    text-transform: uppercase;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.25;
+    letter-spacing: 0.5px;
+}
+.ec-hero-cta { display: inline-flex; align-items: center; gap: 0.6rem; }
+.ec-hero-cta i { font-size: 0.85rem; }
+.ec-hero-col-media { position: relative; }
+.ec-hero-image {
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
+    aspect-ratio: 4 / 5;
+}
+.ec-hero-image img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.ec-hero-image-fallback {
+    width: 100%; height: 100%; min-height: 520px;
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(150deg, #1a1a1a, #0a0a0a);
+    color: var(--em-accent); font-size: 5rem;
+}
+
+@media screen and (max-width: 992px) {
+    .ec-hero-split .ec-hero-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .ec-hero-heading { font-size: 3rem; }
+    .ec-hero.ec-hero-split { padding: 9rem 0 4rem; }
+    .ec-hero-image { aspect-ratio: 16 / 11; max-width: 560px; margin-left: auto; margin-right: auto; }
+}
+@media screen and (max-width: 600px) {
+    .ec-hero-heading { font-size: 2.3rem; }
+    .ec-hero-highlights { gap: 1.25rem; }
+    .ec-hero-highlight { max-width: none; flex: 1 1 100%; }
+}
+
+/* ============================================================
+   EMANU SKIN — MINISTRIES PAGE (Services-style cards)
+   White cards with a circular image/icon; the whole card fills
+   with the crimson accent on hover and the text turns white.
+   ============================================================ */
+.ec-ministry-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+}
+.ec-ministry-svc-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background: var(--em-card);
+    border: 1px solid var(--em-line);
+    border-radius: 18px;
+    padding: 2.5rem 2rem;
+    color: var(--em-body);
+    transition: background 0.35s ease, transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+}
+.ec-ministry-svc-card:hover {
+    background: var(--em-accent);
+    border-color: var(--em-accent);
+    transform: translateY(-6px);
+    box-shadow: 0 28px 60px rgba(176, 6, 31, 0.35);
+}
+.ec-ministry-svc-img {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-bottom: 1.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--em-bg);
+    flex: 0 0 auto;
+}
+.ec-ministry-svc-img img { width: 100%; height: 100%; object-fit: cover; }
+.ec-ministry-svc-img-icon {
+    background: var(--em-accent-d);
+    color: var(--em-accent);
+    font-size: 3.5rem;
+    transition: background 0.35s ease, color 0.35s ease;
+}
+.ec-ministry-svc-card:hover .ec-ministry-svc-img-icon {
+    background: #ffffff;
+    color: var(--em-accent);
+}
+.ec-ministry-svc-card h3 {
+    font-size: 1.4rem;
+    color: var(--em-ink);
+    margin-bottom: 0.4rem;
+    transition: color 0.35s ease;
+}
+.ec-ministry-svc-slogan {
+    display: block;
+    font-family: var(--em-body-font);
+    font-style: italic;
+    font-size: 0.92rem;
+    color: var(--em-accent);
+    margin-bottom: 0.9rem;
+    transition: color 0.35s ease;
+}
+.ec-ministry-svc-card:hover .ec-ministry-svc-slogan { color: rgba(255, 255, 255, 0.85); }
+.ec-ministry-svc-card p {
+    color: var(--em-body);
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+    transition: color 0.35s ease;
+}
+.ec-ministry-svc-more {
+    margin-top: auto;
+    width: 100%;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--em-line);
+    font-family: var(--em-display);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+    font-size: 0.92rem;
+    color: var(--em-accent);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: color 0.35s ease, border-color 0.35s ease;
+}
+.ec-ministry-svc-more i { font-size: 0.8rem; }
+.ec-ministry-svc-card:hover h3,
+.ec-ministry-svc-card:hover p,
+.ec-ministry-svc-card:hover .ec-ministry-svc-more { color: #ffffff; }
+.ec-ministry-svc-card:hover .ec-ministry-svc-more { border-top-color: rgba(255, 255, 255, 0.3); }
+
+@media screen and (max-width: 900px) {
+    .ec-ministry-cards { grid-template-columns: repeat(2, 1fr); }
+}
+@media screen and (max-width: 600px) {
+    .ec-ministry-cards { grid-template-columns: 1fr; }
+}
+
+/* ============================================================
+   EMANU SKIN — SINGLE MINISTRY PAGE
+   ============================================================ */
+.ec-min-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 360px;
+    gap: 3.5rem;
+    align-items: start;
+}
+.ec-min-hero {
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+.ec-min-hero-img { width: 100%; height: auto; display: block; }
+.ec-min-hero-fallback {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 16 / 8;
+    background:
+        radial-gradient(circle at 30% 25%, rgba(255, 255, 255, 0.12), transparent 60%),
+        linear-gradient(135deg, var(--em-accent) 0%, #7d0416 100%);
+    color: #ffffff;
+    font-size: 4.5rem;
+}
+.ec-min-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--em-body-font);
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--em-accent);
+    margin-bottom: 0.5rem;
+}
+.ec-min-title {
+    font-size: 2.4rem;
+    color: var(--em-ink);
+    margin-bottom: 1.25rem;
+}
+.ec-min-content > p {
+    color: var(--em-body);
+    font-size: 1.05rem;
+    line-height: 1.85;
+    margin-bottom: 1.25rem;
+}
+.ec-min-content > p:first-of-type {
+    font-size: 1.2rem;
+    line-height: 1.7;
+    color: var(--em-ink);
+}
+.ec-min-content h2, .ec-min-content h3 { color: var(--em-ink); margin: 2rem 0 0.75rem; }
+.ec-min-content ul { margin: 0 0 1.5rem; padding-left: 1.25rem; }
+.ec-min-content li { color: var(--em-body); margin-bottom: 0.5rem; }
+.ec-min-content a { color: var(--em-accent); text-decoration: underline; }
+
+/* Responsive video embeds inside articles/content.
+   Covers Gutenberg embed blocks AND raw/pasted YouTube/Vimeo iframes
+   (Classic editor / Custom HTML) so they never overflow or render oversized. */
+.ec-min-content iframe,
+.entry-content iframe { max-width: 100%; }
+
+/* Gutenberg embed block (responsive 16:9 fallback in case core block CSS is absent) */
+.ec-min-content .wp-block-embed,
+.entry-content .wp-block-embed { margin: 1.75rem 0; }
+.ec-min-content .wp-block-embed.is-type-video .wp-block-embed__wrapper,
+.entry-content .wp-block-embed.is-type-video .wp-block-embed__wrapper {
+    position: relative; padding-top: 56.25%; border-radius: 12px; overflow: hidden;
+}
+.ec-min-content .wp-block-embed.is-type-video .wp-block-embed__wrapper > iframe,
+.entry-content .wp-block-embed.is-type-video .wp-block-embed__wrapper > iframe {
+    position: absolute; inset: 0; width: 100%; height: 100%; border: 0;
+}
+
+/* Raw/pasted video iframes (no embed-block wrapper) — force full-width 16:9 */
+.ec-min-content iframe[src*="youtube.com"],
+.ec-min-content iframe[src*="youtube-nocookie.com"],
+.ec-min-content iframe[src*="youtu.be"],
+.ec-min-content iframe[src*="vimeo.com"],
+.entry-content iframe[src*="youtube.com"],
+.entry-content iframe[src*="youtube-nocookie.com"],
+.entry-content iframe[src*="youtu.be"],
+.entry-content iframe[src*="vimeo.com"] {
+    display: block; width: 100%; max-width: 100%; height: auto;
+    aspect-ratio: 16 / 9; border: 0; border-radius: 12px; margin: 1.75rem 0;
+}
+
+.ec-min-share { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--em-line); }
+.ec-back-link {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-family: var(--em-display); text-transform: uppercase; letter-spacing: 1px;
+    font-weight: 600; font-size: 0.9rem; color: var(--em-accent);
+}
+.ec-back-link:hover { color: #7d0416; }
+
+/* Sidebar */
+.ec-min-aside { position: sticky; top: 6.5rem; display: grid; gap: 1.5rem; }
+.ec-min-card {
+    background: var(--em-card);
+    border: 1px solid var(--em-line);
+    border-radius: 18px;
+    padding: 1.85rem;
+}
+.ec-min-card h3 { font-size: 1.2rem; color: var(--em-ink); margin-bottom: 1.25rem; }
+.ec-min-detail-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 1.1rem; }
+.ec-min-detail-list li { display: flex; gap: 0.9rem; align-items: flex-start; }
+.ec-min-detail-ico {
+    flex: 0 0 auto; width: 40px; height: 40px; border-radius: 50%;
+    background: var(--em-accent-d); color: var(--em-accent);
+    display: inline-flex; align-items: center; justify-content: center; font-size: 0.9rem;
+}
+.ec-min-detail-list strong {
+    display: block; font-family: var(--em-body-font); font-weight: 600;
+    text-transform: uppercase; letter-spacing: 1px; font-size: 0.68rem; color: var(--em-body); margin-bottom: 0.15rem;
+}
+.ec-min-detail-list li > span:last-child { color: var(--em-ink); font-size: 0.95rem; line-height: 1.4; }
+.ec-min-detail-list a { color: var(--em-accent); }
+
+/* Get connected card */
+.ec-min-join { text-align: center; background: var(--em-accent); border-color: var(--em-accent); }
+.ec-min-join-ico {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 60px; height: 60px; border-radius: 50%; background: rgba(255, 255, 255, 0.16);
+    color: #ffffff; font-size: 1.5rem; margin-bottom: 1rem;
+}
+.ec-min-join h3 { color: #ffffff; margin-bottom: 0.5rem; }
+.ec-min-join p { color: rgba(255, 255, 255, 0.85); font-size: 0.95rem; margin-bottom: 1.5rem; }
+.ec-min-join .ec-btn-orange { background: #ffffff; color: var(--em-accent); }
+.ec-min-join .ec-btn-orange:hover { background: var(--em-ink); color: #ffffff; }
+
+/* Other-ministries nav list */
+.ec-min-nav-list { list-style: none; margin: 0; padding: 0; }
+.ec-min-nav-list li + li { border-top: 1px solid var(--em-line); }
+.ec-min-nav-list a {
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    padding: 0.85rem 0; color: var(--em-ink);
+    font-family: var(--em-display); text-transform: uppercase; font-size: 0.95rem; font-weight: 600; letter-spacing: 0.5px;
+}
+.ec-min-nav-list a i { color: var(--em-accent); font-size: 0.8rem; transition: transform 0.25s ease; }
+.ec-min-nav-list a:hover { color: var(--em-accent); }
+.ec-min-nav-list a:hover i { transform: translateX(4px); }
+
+@media screen and (max-width: 900px) {
+    .ec-min-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .ec-min-aside { position: static; }
+    .ec-min-title { font-size: 2rem; }
+}
+
+/* ============================================================
+   EMANU SKIN — CONTACT PAGE + EVENTS PAGE
+   ============================================================ */
+
+/* White eyebrow pill with crimson dot */
+.ec-eyebrow-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    background: #ffffff;
+    border: 1px solid var(--em-line);
+    border-radius: 999px;
+    padding: 0.5rem 1.1rem;
+    font-family: var(--em-body-font);
+    font-weight: 700;
+    font-size: 0.72rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--em-ink);
+    margin-bottom: 1.25rem;
+    box-shadow: 0 4px 14px rgba(1, 1, 1, 0.05);
+}
+.ec-eyebrow-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--em-accent); }
+.ec-section-header .ec-eyebrow-pill { margin-left: auto; margin-right: auto; }
+
+/* Contact two-column */
+.ec-contact-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+.ec-contact-info .ec-section-title { margin-bottom: 1.25rem; }
+.ec-contact-intro { color: var(--em-body); max-width: 34rem; }
+.ec-contact-divider { height: 1px; background: var(--em-line); margin: 2rem 0; }
+.ec-contact-items { display: grid; grid-template-columns: 1fr 1fr; gap: 1.75rem 1.5rem; }
+.ec-contact-item { display: flex; gap: 1rem; align-items: flex-start; }
+.ec-contact-item-wide { grid-column: 1 / -1; }
+.ec-contact-item-ico {
+    flex: 0 0 auto; width: 52px; height: 52px; border-radius: 50%;
+    background: var(--em-accent); color: #ffffff;
+    display: inline-flex; align-items: center; justify-content: center; font-size: 1.15rem;
+}
+.ec-contact-item-label {
+    display: block; font-family: var(--em-display); text-transform: uppercase;
+    font-size: 0.95rem; font-weight: 700; color: var(--em-ink); margin-bottom: 0.2rem; letter-spacing: 0.5px;
+}
+.ec-contact-item a, .ec-contact-item > div > span { color: var(--em-body); display: block; line-height: 1.5; }
+.ec-contact-item a:hover { color: var(--em-accent); }
+
+/* Prayer-request form card */
+.ec-contact-form-card {
+    background: #ffffff; border: 1px solid var(--em-line); border-radius: 20px;
+    padding: 2.5rem; box-shadow: 0 20px 60px rgba(1, 1, 1, 0.06);
+}
+.ec-contact-form-card h3 { font-size: 1.6rem; color: var(--em-ink); margin-bottom: 1.5rem; }
+.ec-prayer-form { display: grid; gap: 1rem; position: relative; }
+.ec-prayer-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.ec-prayer-form input, .ec-prayer-form textarea {
+    width: 100%; background: var(--em-bg); border: 1px solid transparent; border-radius: 10px;
+    padding: 0.95rem 1.1rem; font-family: var(--em-body-font); font-size: 0.95rem; color: var(--em-ink);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+.ec-prayer-form input::placeholder, .ec-prayer-form textarea::placeholder { color: #9a978f; }
+.ec-prayer-form input:focus, .ec-prayer-form textarea:focus {
+    outline: none; border-color: var(--em-accent); box-shadow: 0 0 0 3px var(--em-accent-d); background: #ffffff;
+}
+.ec-prayer-form textarea { resize: vertical; min-height: 120px; }
+.ec-prayer-form .ec-btn-orange { justify-self: start; margin-top: 0.5rem; border: none; cursor: pointer; }
+.ec-hp-field { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
+/* Map embed */
+.ec-map-embed {
+    border-radius: 18px; overflow: hidden; border: 1px solid var(--em-line);
+    box-shadow: 0 18px 50px rgba(1, 1, 1, 0.08); line-height: 0;
+}
+.ec-map-embed iframe { width: 100%; height: 450px; border: 0; display: block; }
+
+/* Form notices */
+.ec-form-notice { padding: 0.9rem 1.2rem; border-radius: 10px; margin-bottom: 1.25rem; font-weight: 600; font-size: 0.95rem; }
+.ec-form-notice-success { background: #e7f6ec; color: #1c7c3f; border: 1px solid #bce5cb; }
+.ec-form-notice-error { background: #fdeaec; color: #b0061f; border: 1px solid #f3c0c7; }
+
+/* Events page card extras */
+.ec-event-thumb-fallback {
+    display: flex; align-items: center; justify-content: center; height: 100%; min-height: 170px;
+    background: linear-gradient(135deg, var(--em-accent), #7d0416); color: #ffffff; font-size: 2.5rem;
+}
+.ec-event-meta-row { display: flex; flex-wrap: wrap; gap: 1rem; font-size: 0.82rem; color: var(--em-accent); font-weight: 600; margin-bottom: 0.6rem; }
+.ec-events-note { color: var(--em-body); font-style: italic; }
+
+@media screen and (max-width: 900px) {
+    .ec-contact-layout { grid-template-columns: 1fr; gap: 2.5rem; }
+}
+@media screen and (max-width: 600px) {
+    .ec-contact-items { grid-template-columns: 1fr; }
+    .ec-prayer-row { grid-template-columns: 1fr; }
+    .ec-contact-form-card { padding: 1.75rem; }
+}
+
+/* ============================================================
+   EMANU SKIN — BRAND LOGO LOCKUP
+   Crimson church badge + wordmark; adapts to header state.
+   ============================================================ */
+.ec-logo-link { display: inline-flex; align-items: center; gap: 0.7rem; }
+.ec-brand-mark {
+    width: 46px; height: 46px; border-radius: 50%;
+    background: var(--em-accent);
+    display: inline-flex; align-items: center; justify-content: center;
+    flex: 0 0 auto;
+    box-shadow: 0 6px 16px rgba(176, 6, 31, 0.35);
+    transition: width 0.3s ease, height 0.3s ease;
+}
+.ec-brand-mark svg { display: block; }
+.ec-brand-text { display: flex; flex-direction: column; line-height: 1; }
+.ec-brand-name {
+    font-family: var(--em-display);
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 1.15rem;
+    letter-spacing: 0.5px;
+    color: #ffffff;
+    white-space: nowrap;
+    transition: color 0.3s ease;
+}
+.ec-brand-sub {
+    font-family: var(--em-body-font);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-size: 0.6rem;
+    font-weight: 700;
+    color: var(--em-accent);
+    margin-top: 4px;
+}
+/* Scrolled header → dark wordmark on the ivory bar */
+.ec-header.scrolled .ec-brand-name { color: var(--em-ink); }
+.ec-header.scrolled .ec-brand-mark { width: 40px; height: 40px; }
+
+/* Footer: full lockup (badge + wordmark) on the dark footer */
+.ec-footer-brandmark { display: inline-flex; align-items: center; margin-bottom: 1rem; }
+
+@media screen and (max-width: 480px) {
+    .ec-brand-name { font-size: 1rem; }
+    .ec-brand-sub { font-size: 0.55rem; letter-spacing: 2.5px; }
+    .ec-brand-mark { width: 40px; height: 40px; }
+}
+
+/* ============================================================
+   EMANU SKIN — MOBILE FIXES
+   ============================================================ */
+/* Clamp the initial containing block so the fixed header never overflows on
+   mobile if any section is momentarily wider than the viewport. */
+html { overflow-x: hidden; }
+
+/* Let grid/flex columns shrink below their content width so long words or
+   media never force horizontal overflow on small screens. */
+.ec-hero-grid > *, .ec-about-grid > *, .ec-about-story-grid > *,
+.ec-values-grid > *, .ec-give-inner > *, .ec-impact-grid > *,
+.ec-contact-layout > *, .ec-min-grid > *, .ec-pastor-feature > * { min-width: 0; }
+.ec-hero-heading, .ec-section-title, .ec-min-title { overflow-wrap: anywhere; }
+
+@media screen and (max-width: 768px) {
+    .ec-header-inner { gap: 0.65rem; padding-left: 1.25rem; padding-right: 70px; flex-wrap: nowrap; }
+    .ec-header-cta { gap: 0.6rem; flex: 0 0 auto; }
+    .ec-btn-new { padding: 0.55rem 1rem; font-size: 0.78rem; white-space: nowrap; }
+    /* Standard mobile header: logo + a fixed crimson hamburger (Donation lives
+       in the menu and the homepage Give section). The toggle is moved out of
+       the header in markup and pinned to the viewport so it always shows. */
+    .ec-header-cta .ec-btn-new { display: none; }
+    .ec-menu-toggle {
+        display: flex !important;
+        position: fixed;
+        top: 1.1rem;
+        right: 1.1rem;
+        z-index: 1100;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 5px;
+        width: 46px;
+        height: 46px;
+        border-radius: 12px;
+        border: none;
+        padding: 0;
+        background: var(--em-accent);
+        box-shadow: 0 6px 18px rgba(176, 6, 31, 0.4);
+    }
+    .ec-menu-toggle span { width: 20px; height: 2px; background: #ffffff; }
+
+    /* Dark mobile nav panel matching the skin */
+    .ec-main-nav { background: #0a0a0a; border-top: 1px solid var(--em-line); }
+    /* Tall enough for every item; scrolls if the list is long. */
+    .ec-main-nav.active { max-height: calc(100vh - 76px); overflow-y: auto; }
+    .ec-main-nav ul { padding: 0.25rem 1.5rem 0.5rem; }
+    .ec-main-nav ul li a { padding: 0.45rem 0; font-size: 0.9rem; line-height: 1.2; }
+    .ec-main-nav ul li a,
+    .ec-header.scrolled .ec-main-nav ul li a { color: #ffffff; }
+    /* Current page link must stay visible on the dark panel (crimson is too dark) */
+    .ec-main-nav ul li.current-menu-item > a,
+    .ec-main-nav ul li.current_page_item > a,
+    .ec-header.scrolled .ec-main-nav ul li.current-menu-item > a { color: #ff6b7e; }
+    .ec-main-nav ul li.menu-item-has-children > a::after { content: none; }
+
+    /* Hero headline must never clip */
+    .ec-hero-heading { font-size: 2.7rem; overflow-wrap: anywhere; }
+}
+
+@media screen and (max-width: 600px) {
+    .ec-container { padding-left: 1.25rem; padding-right: 1.25rem; }
+    .ec-hero.ec-hero-split { padding: 8.5rem 0 3.5rem; }
+    .ec-hero-heading { font-size: 2.2rem; }
+    .ec-hero-split .ec-hero-desc { max-width: 100%; }
+    .ec-affiliations-list li { white-space: normal; }
+    .ec-section-title { font-size: 1.9rem; }
+    .ec-min-title, .ec-about-banner .ec-page-header-content h1 { font-size: 1.9rem; }
+    .ec-cta-band { padding: 2.5rem 1.5rem; }
+    .ec-cta-band h2 { font-size: 1.7rem; }
+}
+
+/* ============================================================
+   EMANU SKIN — FOOTER (newsletter band + 4 columns + bottom bar)
+   ============================================================ */
+.ec-footer {
+    background-color: #0a0a0a;
+    background-image: repeating-linear-gradient(135deg, rgba(255,255,255,0.016) 0 1px, transparent 1px 15px);
+    color: rgba(255, 255, 255, 0.72);
+    padding: 0;
+}
+
+/* Newsletter band */
+.ec-footer-newsletter {
+    display: grid;
+    grid-template-columns: 1.45fr 1fr;
+    gap: 3.5rem;
+    align-items: center;
+    padding: 4.5rem 0 3rem;
+}
+.ec-footer-news-title {
+    font-family: var(--em-display);
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 2.7rem;
+    line-height: 1.04;
+    color: #ffffff;
+    margin: 0;
+}
+.ec-footer-news-label {
+    display: block;
+    font-family: var(--em-display);
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 1px;
+    font-size: 1.05rem;
+    color: #ffffff;
+    margin-bottom: 1.1rem;
+}
+.ec-footer-news-form {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 999px;
+    padding: 0.4rem 0.4rem 0.4rem 1.5rem;
+}
+.ec-footer-news-form input[type="email"] {
+    flex: 1 1 auto;
+    min-width: 0;
+    background: transparent;
+    border: none;
+    color: #ffffff;
+    font-family: var(--em-body-font);
+    font-size: 1rem;
+    padding: 0.75rem 0;
+    outline: none;
+}
+.ec-footer-news-form input::placeholder { color: rgba(255, 255, 255, 0.5); }
+.ec-footer-news-form button {
+    flex: 0 0 auto;
+    width: 50px; height: 50px;
+    border-radius: 50%;
+    background: var(--em-accent);
+    color: #ffffff;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.05rem;
+    transition: background 0.25s ease, transform 0.25s ease;
+}
+.ec-footer-news-form button:hover { background: #7d0416; transform: translateX(2px); }
+.ec-footer-news-note { display: block; margin-top: 0.75rem; font-size: 0.85rem; color: #7fdc95; }
+.ec-footer-news-note-error { color: #ff8a98; }
+
+.ec-footer-divider { height: 1px; background: rgba(255, 255, 255, 0.1); }
+
+/* Columns */
+.ec-footer-widgets {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1.3fr 1.35fr;
+    gap: 2.5rem;
+    padding: 3.5rem 0;
+}
+.ec-footer-brandmark { display: inline-flex; align-items: center; margin-bottom: 1.75rem; }
+.ec-footer-contact-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 1.1rem; }
+.ec-footer-contact-list li { display: flex; align-items: center; gap: 0.85rem; }
+.ec-footer-contact-ico { color: var(--em-accent); font-size: 1.05rem; flex: 0 0 auto; width: 22px; text-align: center; }
+.ec-footer-contact-list a { color: rgba(255, 255, 255, 0.82); }
+.ec-footer-contact-list a:hover { color: var(--em-accent); }
+
+.ec-footer-widget h4 {
+    font-family: var(--em-display);
+    text-transform: uppercase;
+    color: #ffffff;
+    font-size: 1.15rem;
+    letter-spacing: 0.5px;
+    margin-bottom: 1.5rem;
+}
+.ec-footer-widget ul { list-style: none; margin: 0; padding: 0; }
+.ec-footer-widget li { margin-bottom: 0.95rem; }
+.ec-footer-widget a { color: rgba(255, 255, 255, 0.72); transition: color 0.2s ease, padding-left 0.2s ease; }
+.ec-footer-widget a:hover { color: var(--em-accent); padding-left: 4px; }
+.ec-footer-times-list li { color: rgba(255, 255, 255, 0.72); margin-bottom: 0.95rem; line-height: 1.5; }
+
+/* Social icons in the Service Times column */
+.ec-footer-social { display: flex; gap: 0.75rem; margin-top: 1.75rem; }
+.ec-footer-social a {
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #ffffff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.95rem;
+    transition: all 0.25s ease;
+}
+.ec-footer-social a:hover { background: var(--em-accent); border-color: var(--em-accent); color: #ffffff; transform: translateY(-3px); }
+
+/* Bottom bar */
+.ec-footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1.85rem 0;
+    text-align: center;
+}
+.ec-footer-bottom p { margin: 0; color: rgba(255, 255, 255, 0.6); font-size: 0.95rem; }
+
+/* Footer responsive */
+@media screen and (max-width: 900px) {
+    .ec-footer-newsletter { grid-template-columns: 1fr; gap: 1.75rem; padding: 3rem 0 2.5rem; }
+    .ec-footer-news-title { font-size: 2.1rem; }
+    .ec-footer-widgets { grid-template-columns: 1fr 1fr; gap: 2.5rem 2rem; }
+}
+@media screen and (max-width: 560px) {
+    .ec-footer-widgets { grid-template-columns: 1fr; gap: 2.25rem; }
+    .ec-footer-news-title { font-size: 1.8rem; }
+    .ec-footer-brandmark { justify-content: flex-start; }
+}
+
+/* ============================================================
+   EMANU SKIN — SERMON / EVENT / POST DETAILS, ARCHIVES,
+   SEARCH, 404, PAGINATION
+   ============================================================ */
+
+/* Sermon & event media */
+.ec-sermon-media { position: relative; margin-bottom: 1.75rem; }
+.ec-sermon-cover { width: 100%; border-radius: 16px; display: block; }
+.ec-sermon-video { position: relative; padding-bottom: 56.25%; height: 0; border-radius: 16px; overflow: hidden; }
+.ec-sermon-video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.ec-sermon-media-fallback,
+.ec-event-hero-fallback {
+    aspect-ratio: 16 / 9; border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, var(--em-accent), #7d0416); color: #fff; font-size: 3.5rem; min-height: 0;
+}
+.ec-sermon-watch { position: absolute; left: 1rem; bottom: 1rem; background: var(--em-accent); color: #fff; padding: 0.5rem 1.1rem; border-radius: 999px; font-weight: 600; font-size: 0.85rem; }
+.ec-event-date-badge-lg { width: 74px; height: 82px; }
+
+.ec-sermon-meta-row, .ec-post-meta-row {
+    display: flex; flex-wrap: wrap; gap: 1.25rem;
+    color: var(--em-accent); font-weight: 600; font-size: 0.85rem; margin-bottom: 1.25rem;
+}
+
+/* Audio */
+.ec-sermon-audio { background: var(--em-bg); border: 1px solid var(--em-line); border-radius: 14px; padding: 1.25rem 1.5rem; margin-bottom: 1.75rem; }
+.ec-sermon-audio-label { display: block; font-weight: 600; color: var(--em-ink); margin-bottom: 0.75rem; }
+.ec-sermon-audio-label i { color: var(--em-accent); margin-right: 0.4rem; }
+.ec-sermon-audio audio { width: 100%; }
+
+/* Sermon cards (archive / related) readability on light skin */
+.ec-sermon-info .ec-sermon-date { color: var(--em-accent); font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 1px; }
+.ec-sermon-title a { color: var(--em-ink); }
+.ec-sermon-title a:hover { color: var(--em-accent); }
+.ec-sermon-speaker { color: var(--em-body); }
+.ec-sermon-play { background: var(--em-accent); color: #fff; }
+
+/* Single post (blog) */
+.ec-post-narrow { max-width: 820px; }
+.ec-post-cover { border-radius: 16px; overflow: hidden; margin-bottom: 2rem; }
+.ec-post-cover img { width: 100%; display: block; }
+.ec-post-body { margin-bottom: 1rem; }
+.ec-post-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 2rem 0; }
+.ec-post-tags a { background: var(--em-bg); border: 1px solid var(--em-line); border-radius: 999px; padding: 0.35rem 0.95rem; font-size: 0.8rem; color: var(--em-body); }
+.ec-post-tags a:hover { background: var(--em-accent); color: #fff; border-color: var(--em-accent); }
+.ec-post-nav { display: flex; justify-content: space-between; gap: 1rem; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--em-line); }
+.ec-post-nav a { color: var(--em-ink); font-weight: 600; }
+.ec-post-nav a:hover { color: var(--em-accent); }
+.ec-post-nav-next { margin-left: auto; text-align: right; }
+
+/* Search form */
+.ec-search-form { display: flex; gap: 0.5rem; max-width: 560px; }
+.ec-search-form-center { margin: 0 auto 2rem; }
+.ec-search-form input { flex: 1; min-width: 0; background: var(--em-card); border: 1px solid var(--em-line); border-radius: 10px; padding: 0.85rem 1.1rem; color: var(--em-ink); font-family: var(--em-body-font); }
+.ec-search-form input:focus { outline: none; border-color: var(--em-accent); box-shadow: 0 0 0 3px var(--em-accent-d); }
+.ec-search-form button { background: var(--em-accent); color: #fff; border: none; border-radius: 10px; padding: 0 1.25rem; font-family: var(--em-display); text-transform: uppercase; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem; }
+.ec-search-form button:hover { background: var(--em-ink); }
+
+/* 404 */
+.ec-404-code { font-family: var(--em-display); font-size: 7rem; font-weight: 700; color: var(--em-accent); line-height: 1; margin-bottom: 0.5rem; }
+.ec-404-links { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 1.75rem; }
+
+/* Pagination */
+.ec-archive-pagination .nav-links { display: flex; justify-content: center; flex-wrap: wrap; gap: 0.5rem; margin-top: 3rem; }
+.ec-archive-pagination .page-numbers {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: 44px; height: 44px; padding: 0 0.7rem; border-radius: 10px;
+    border: 1px solid var(--em-line); color: var(--em-ink); font-weight: 600; background: var(--em-card);
+}
+.ec-archive-pagination .page-numbers.current,
+.ec-archive-pagination .page-numbers:hover { background: var(--em-accent); color: #fff; border-color: var(--em-accent); }
+.ec-archive-pagination .page-numbers.dots { border: none; background: transparent; }
+
+@media screen and (max-width: 560px) {
+    .ec-404-code { font-size: 5rem; }
+    .ec-post-nav { flex-direction: column; }
+    .ec-post-nav-next { margin-left: 0; text-align: left; }
+}
+
+/* ============================================================
+   EMANU SKIN — GALLERY + LIGHTBOX + OUTREACH
+   ============================================================ */
+
+/* Gallery masonry */
+.ec-gallery-grid { column-count: 3; column-gap: 1rem; }
+.ec-gallery-item { position: relative; display: block; margin: 0 0 1rem; break-inside: avoid; border-radius: 14px; overflow: hidden; }
+.ec-gallery-item img { width: 100%; display: block; transition: transform 0.5s ease; }
+.ec-gallery-item:hover img { transform: scale(1.06); }
+.ec-gallery-zoom {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 1.6rem; opacity: 0; background: rgba(10, 10, 10, 0); transition: all 0.3s ease;
+}
+.ec-gallery-item:hover .ec-gallery-zoom { opacity: 1; background: rgba(10, 10, 10, 0.4); }
+@media screen and (max-width: 900px) { .ec-gallery-grid { column-count: 2; } }
+@media screen and (max-width: 560px) { .ec-gallery-grid { column-count: 1; } }
+
+/* Lightbox */
+.ec-lightbox { position: fixed; inset: 0; z-index: 2000; display: none; align-items: center; justify-content: center; background: rgba(8, 8, 8, 0.95); padding: 2rem; }
+.ec-lightbox.is-open { display: flex; }
+.ec-lightbox-figure { margin: 0; max-width: 92vw; text-align: center; }
+.ec-lightbox-img { max-width: 92vw; max-height: 80vh; border-radius: 10px; display: block; margin: 0 auto; }
+.ec-lightbox-caption { color: rgba(255, 255, 255, 0.85); margin-top: 1rem; font-size: 0.95rem; }
+.ec-lightbox-caption:empty { display: none; }
+.ec-lightbox-close { position: absolute; top: 1.25rem; right: 1.5rem; width: 46px; height: 46px; border-radius: 50%; background: rgba(255, 255, 255, 0.1); border: none; color: #fff; font-size: 1.3rem; cursor: pointer; }
+.ec-lightbox-nav { position: absolute; top: 50%; transform: translateY(-50%); width: 52px; height: 52px; border-radius: 50%; background: rgba(255, 255, 255, 0.1); border: none; color: #fff; font-size: 1.1rem; cursor: pointer; }
+.ec-lightbox-close:hover, .ec-lightbox-nav:hover { background: var(--em-accent); }
+.ec-lightbox-prev { left: 1.5rem; }
+.ec-lightbox-next { right: 1.5rem; }
+@media screen and (max-width: 560px) {
+    .ec-lightbox-nav { width: 42px; height: 42px; }
+    .ec-lightbox-prev { left: 0.5rem; }
+    .ec-lightbox-next { right: 0.5rem; }
+}
+
+/* Albums — listing of dated photo collections.
+   auto-fit + justify-content:center keeps a lone card (or a last-row
+   remainder) centred instead of stuck against the left edge on tablet/mobile.
+   The min(100%, …) floor stops cards overflowing very narrow screens. */
+.ec-album-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 360px));
+    justify-content: center;
+    gap: 1.75rem;
+}
+.ec-album-card {
+    display: block;
+    background: #fff;
+    border: 1px solid var(--em-line);
+    border-radius: 16px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.ec-album-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 16px 40px rgba(10, 10, 10, 0.12);
+}
+.ec-album-card-cover {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: var(--em-bg);
+}
+.ec-album-card-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+}
+.ec-album-card:hover .ec-album-card-cover img { transform: scale(1.06); }
+.ec-album-card-fallback {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--em-accent); font-size: 2.6rem;
+    background: linear-gradient(135deg, #1a1a2e, #2a2a48);
+}
+.ec-album-card-count {
+    position: absolute; bottom: 0.75rem; right: 0.75rem;
+    display: inline-flex; align-items: center; gap: 0.35rem;
+    background: rgba(10, 10, 10, 0.7); color: #fff;
+    font-size: 0.8rem; font-weight: 600;
+    padding: 0.3rem 0.6rem; border-radius: 999px;
+}
+.ec-album-card-info { padding: 1.1rem 1.25rem 1.35rem; }
+.ec-album-card-date {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    color: var(--em-accent); font-size: 0.82rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.04em;
+}
+.ec-album-card-title {
+    margin: 0.5rem 0 0; font-size: 1.2rem; line-height: 1.3;
+}
+
+/* Sermon video modal */
+.ec-video-modal { position: fixed; inset: 0; z-index: 2000; display: none; align-items: center; justify-content: center; background: rgba(8, 8, 8, 0.95); padding: 2rem; }
+.ec-video-modal.is-open { display: flex; }
+.ec-video-modal-inner { width: min(960px, 92vw); }
+.ec-video-modal-frame { position: relative; padding-bottom: 56.25%; height: 0; border-radius: 14px; overflow: hidden; background: #000; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5); }
+.ec-video-modal-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.ec-video-modal-close { position: absolute; top: 1.25rem; right: 1.5rem; width: 46px; height: 46px; border-radius: 50%; background: rgba(255, 255, 255, 0.1); border: none; color: #fff; font-size: 1.3rem; cursor: pointer; transition: background 0.2s ease; }
+.ec-video-modal-close:hover { background: var(--em-accent); }
+
+/* Homepage gallery preview */
+.ec-home-gallery-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+.ec-home-gallery-item { position: relative; display: block; aspect-ratio: 1 / 1; border-radius: 14px; overflow: hidden; }
+.ec-home-gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+.ec-home-gallery-item:hover img { transform: scale(1.08); }
+.ec-home-gallery-ov {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    background: rgba(176, 6, 31, 0); color: #fff; opacity: 0; font-size: 1.3rem; transition: all 0.3s ease;
+}
+.ec-home-gallery-item:hover .ec-home-gallery-ov { opacity: 1; background: rgba(176, 6, 31, 0.55); }
+@media screen and (max-width: 900px) { .ec-home-gallery-grid { grid-template-columns: repeat(3, 1fr); } }
+@media screen and (max-width: 560px) { .ec-home-gallery-grid { grid-template-columns: repeat(2, 1fr); } }
+
+/* Plan Your Visit */
+.ec-visit-grid { grid-template-columns: repeat(4, 1fr); }
+.ec-visit-grid .ec-pillar-card { text-align: center; }
+.ec-visit-grid .ec-pillar-icon { margin-left: auto; margin-right: auto; }
+.ec-visit-times { grid-template-columns: repeat(3, 1fr); }
+.ec-visit-times .ec-mv-item { text-align: center; }
+.ec-visit-times .ec-mv-icon { margin: 0 auto 1rem; }
+.ec-visit-where {
+    display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap;
+    justify-content: center; text-align: left;
+    margin-top: 2rem; padding: 1.5rem 2rem;
+    background: var(--em-bg); border: 1px solid var(--em-line); border-radius: 16px;
+}
+.ec-visit-where-ico {
+    flex: 0 0 auto; width: 52px; height: 52px; border-radius: 50%;
+    background: var(--em-accent); color: #fff; display: inline-flex; align-items: center; justify-content: center; font-size: 1.2rem;
+}
+.ec-visit-where .ec-btn { margin-left: auto; }
+@media screen and (max-width: 900px) {
+    .ec-visit-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media screen and (max-width: 600px) {
+    .ec-visit-grid, .ec-visit-times { grid-template-columns: 1fr; }
+    .ec-visit-where { flex-direction: column; text-align: center; }
+    .ec-visit-where .ec-btn { margin-left: 0; }
+}
+
+/* Outreach image/text rows */
+.ec-out-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+.ec-out-grid > * { min-width: 0; }
+.ec-out-grid-rev .ec-out-media { order: 2; }
+.ec-out-media img, .ec-out-media .ec-about-media-fallback {
+    width: 100%; border-radius: 18px; aspect-ratio: 4 / 3; object-fit: cover; border: 1px solid var(--em-line);
+}
+.ec-out-media .ec-about-media-fallback { font-size: 3.5rem; }
+.ec-out-body .ec-section-title { margin-bottom: 1.1rem; }
+.ec-out-body > p { color: var(--em-body); margin-bottom: 1.1rem; }
+.ec-out-body .ec-give-verse { color: var(--em-ink); font-size: 1.25rem; margin: 1.5rem 0 0; }
+@media screen and (max-width: 900px) {
+    .ec-out-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .ec-out-grid-rev .ec-out-media { order: 0; }
+    .ec-out-media { max-width: 540px; }
+}
+
+/* ============================================================
+   EMANU SKIN — OFFICIAL LOGO INSIDE THE CRIMSON BADGE
+   The crimson circle badge holds the church's white emblem; the
+   wordmark sits beside it (white on the dark hero, ink when the
+   header is scrolled to ivory) — on every screen size, incl. mobile.
+   ============================================================ */
+.ec-brand-mark-img { width: 30px; height: 30px; object-fit: contain; display: block; }
+.ec-logo-img { height: 56px; width: auto; display: block; } /* custom-logo branch only */
+.ec-header.scrolled .ec-logo-img { height: 46px; }
+.ec-footer-logo { height: 64px; width: auto; margin-bottom: 1rem; }
+
+/* Show the wordmark on mobile too, sized to fit beside the badge */
+@media screen and (max-width: 768px) {
+    .ec-header .ec-brand-text { display: flex; }
+    .ec-header .ec-brand-name { font-size: 1rem; }
+}
